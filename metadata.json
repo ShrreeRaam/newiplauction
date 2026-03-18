@@ -1,0 +1,5 @@
+{
+  "name": "Remix: Remix: IPL Auction Simulator",
+  "description": "A real-time IPL player auction simulator with room-based bidding and live updates.",
+  "requestFramePermissions": []
+}
