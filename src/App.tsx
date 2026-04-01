@@ -41,6 +41,8 @@ export default function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState('');
   const [bidError, setBidError] = useState('');
+  const [username, setUsername] = useState('');
+  const [notification, setNotification] = useState<string | null>(null);
   
   const [gameState, setGameState] = useState<{
     currentPlayer: Player | null;
@@ -51,6 +53,7 @@ export default function App() {
     soldPlayers: { player: Player; team: string; price: number }[];
     teams: Record<string, { purse: number; players: Player[] }>;
     teamOwners: Record<string, string>;
+    usernames: Record<string, string>;
     currentBidLog: { team: string; price: number }[];
     playerIndex: number;
     totalPlayers: number;
@@ -66,6 +69,7 @@ export default function App() {
     soldPlayers: [],
     teams: {},
     teamOwners: {},
+    usernames: {},
     currentBidLog: [],
     playerIndex: -1,
     totalPlayers: 0,
@@ -85,7 +89,6 @@ export default function App() {
       setRoomId(roomId);
       setIsAdmin(true);
       setView('auction');
-      socket.emit('joinRoom', { roomId });
     });
 
     socket.on('joinAuction', (state) => {
@@ -116,8 +119,13 @@ export default function App() {
       setGameState(prev => ({ ...prev, soldPlayers }));
     });
 
-    socket.on('teamUpdate', (teamOwners) => {
-      setGameState(prev => ({ ...prev, teamOwners }));
+    socket.on('teamUpdate', ({ teamOwners, usernames }) => {
+      setGameState(prev => ({ ...prev, teamOwners, usernames }));
+    });
+    
+    socket.on('notification', ({ message }) => {
+      setNotification(message);
+      setTimeout(() => setNotification(null), 3000);
     });
 
     socket.on('bidError', ({ message }) => {
@@ -170,12 +178,20 @@ export default function App() {
   }, []);
 
   const handleCreateRoom = () => {
-    socket.emit('createRoom', { mode: selectedMode });
+    if (!username.trim()) {
+      setError('Please enter a username');
+      return;
+    }
+    socket.emit('createRoom', { mode: selectedMode, username });
   };
-
+  
   const handleJoinRoom = () => {
+    if (!username.trim()) {
+      setError('Please enter a username');
+      return;
+    }
     if (joinId.length === 4) {
-      socket.emit('joinRoom', { roomId: joinId });
+      socket.emit('joinRoom', { roomId: joinId, username });
     } else {
       setError('Enter a 4-digit Room ID');
     }
@@ -213,8 +229,8 @@ export default function App() {
     ? (gameState.currentPlayer?.basePrice || 0) 
     : gameState.currentBid + getIncrement(gameState.currentBid);
 
-  const myTeam = Object.keys(gameState.teamOwners).find(t => gameState.teamOwners[t] === socket.id);
-  const myPurse = myTeam ? gameState.teams[myTeam]?.purse : 0;
+  const myTeam = Object.keys(gameState.teamOwners || {}).find(t => gameState.teamOwners?.[t] === socket.id);
+  const myPurse = myTeam ? gameState.teams?.[myTeam]?.purse : 0;
   const canAfford = myPurse >= nextBidAmount;
 
   if (view === 'lobby') {
@@ -236,6 +252,17 @@ export default function App() {
           </div>
 
           <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-[#8888a0] uppercase tracking-widest px-1">Your Name</label>
+              <input
+                type="text"
+                placeholder="Enter Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full bg-[#0f0f14] border border-[#2a2a38] rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-[#00d4aa] transition-colors"
+              />
+            </div>
+
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <button
@@ -309,6 +336,21 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0f0f14] text-white p-4 md:p-6 lg:p-8">
+      {/* Notification Banner */}
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-[#00d4aa] text-[#0f0f14] px-6 py-3 rounded-full font-bold shadow-[0_0_30px_rgba(0,212,170,0.4)] flex items-center gap-3 border-2 border-white/20"
+          >
+            <div className="w-2 h-2 bg-[#0f0f14] rounded-full animate-pulse" />
+            {notification}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header with Mode and Room ID */}
       <div className="max-w-7xl mx-auto mb-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-[#1a1a24] p-4 rounded-2xl border border-[#2a2a38]">
         <div className="flex items-center gap-4">
@@ -480,9 +522,9 @@ export default function App() {
         {view === 'auction' && (
           <>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left Panel: Current Player */}
+          {/* Left Panel: Current Player & Owners */}
           <div className="lg:col-span-3 space-y-6">
-            <section className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] h-full flex flex-col items-center text-center relative overflow-hidden">
+            <section className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] flex flex-col items-center text-center relative overflow-hidden">
               <h3 className="w-full text-left text-xs font-bold text-[#8888a0] uppercase tracking-wider mb-6">Current Player</h3>
               
               <AnimatePresence mode="wait">
@@ -506,7 +548,10 @@ export default function App() {
                     </div>
                     
                     <div>
-                      <h2 className="text-2xl font-bold">{gameState.currentPlayer.name}</h2>
+                      <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
+                        {gameState.currentPlayer.name}
+                        {gameState.currentPlayer.isOverseas && <span className="text-lg" title="Overseas Player">✈️</span>}
+                      </h2>
                       <span className={cn(
                         "inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mt-2",
                         gameState.currentPlayer.role === 'BATSMAN' && "bg-red-500/20 text-red-500",
@@ -536,6 +581,31 @@ export default function App() {
                   </div>
                 )}
               </AnimatePresence>
+            </section>
+
+            {/* Team Owners */}
+            <section className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38]">
+              <h3 className="text-xs font-bold text-[#8888a0] uppercase tracking-wider mb-4 flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                Team Owners
+              </h3>
+              <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
+                {Object.entries(gameState.teamOwners || {}).length > 0 ? (
+                  Object.entries(gameState.teamOwners || {}).map(([team, ownerId]) => (
+                    <div key={team} className="flex items-center justify-between p-3 bg-[#0f0f14] rounded-xl border border-[#2a2a38]">
+                      <div className="flex items-center gap-3">
+                        <img src={TEAM_LOGOS[team]} alt={team} className="w-6 h-6 object-contain" />
+                        <span className="font-bold text-sm">{team}</span>
+                      </div>
+                      <span className="text-xs font-bold text-[#00d4aa] truncate max-w-[120px] text-right">
+                        {gameState.usernames?.[ownerId as string] || "Unknown"}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-[#8888a0] italic text-xs text-center py-4">No teams selected yet.</p>
+                )}
+              </div>
             </section>
           </div>
 
@@ -603,11 +673,16 @@ export default function App() {
                       className="w-full bg-[#0f0f14] border border-[#2a2a38] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00d4aa] disabled:opacity-50"
                     >
                       <option value="">— Select Team —</option>
-                      {Object.keys(gameState.teams).map(team => (
-                        <option key={team} value={team} disabled={!!gameState.teamOwners[team] && gameState.teamOwners[team] !== socket.id}>
-                          {team} {gameState.teamOwners[team] && gameState.teamOwners[team] !== socket.id ? "(Taken)" : ""}
-                        </option>
-                      ))}
+                      {Object.keys(gameState.teams || {}).map(team => {
+                        const ownerSocketId = gameState.teamOwners?.[team];
+                        const ownerName = ownerSocketId ? gameState.usernames?.[ownerSocketId] : null;
+                        return (
+                          <option key={team} value={team} disabled={!!ownerSocketId && ownerSocketId !== socket.id}>
+                            {team} {ownerName && ownerSocketId !== socket.id ? `(${ownerName})` : ""}
+                            {ownerSocketId === socket.id ? " (My Team)" : ""}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                   <div className="flex items-end">
@@ -633,11 +708,16 @@ export default function App() {
                 Team Purses
               </h3>
               <div className="space-y-4">
-                {Object.entries(gameState.teams).map(([name, data]: [string, any]) => (
+                {Object.entries(gameState.teams || {}).map(([name, data]: [string, any]) => (
                   <div key={name} className="flex items-center justify-between p-2 rounded-lg hover:bg-[#0f0f14] transition-colors">
                     <div className="flex items-center gap-3">
                       <img src={TEAM_LOGOS[name]} alt={name} className="w-6 h-6 object-contain" />
-                      <span className="font-bold text-sm">{name}</span>
+                      <div className="flex flex-col">
+                        <span className="font-bold text-sm">{name}</span>
+                        <span className="text-[10px] text-[#8888a0]">
+                          {data.players.length}/25 ({data.players.filter((p: any) => p.isOverseas).length} ✈️)
+                        </span>
+                      </div>
                     </div>
                     <span className="text-[#00d4aa] font-mono text-sm font-bold">{formatPrice(data.purse)}</span>
                   </div>
@@ -722,7 +802,7 @@ export default function App() {
         {view === 'squads' && (
           <div className="space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-              {Object.keys(gameState.teams).map(team => (
+              {Object.keys(gameState.teams || {}).map(team => (
                 <button
                   key={team}
                   onClick={() => setSelectedSquadTeam(team)}
@@ -739,7 +819,7 @@ export default function App() {
                     "text-[10px] font-black uppercase",
                     selectedSquadTeam === team ? "text-[#0f0f14]/70" : "text-[#8888a0]"
                   )}>
-                    {gameState.teams[team].players.length} Players
+                    {gameState.teams?.[team]?.players?.length || 0} Players
                   </span>
                 </button>
               ))}
@@ -756,7 +836,7 @@ export default function App() {
                     <img src={TEAM_LOGOS[selectedSquadTeam]} alt={selectedSquadTeam} className="w-16 h-16 object-contain" />
                     <div>
                       <h3 className="text-2xl font-bold">{selectedSquadTeam} Squad</h3>
-                      <p className="text-[#8888a0]">Remaining Purse: <span className="text-[#00d4aa] font-bold">{formatPrice(gameState.teams[selectedSquadTeam].purse)}</span></p>
+                      <p className="text-[#8888a0]">Remaining Purse: <span className="text-[#00d4aa] font-bold">{formatPrice(gameState.teams?.[selectedSquadTeam]?.purse || 0)}</span></p>
                     </div>
                   </div>
                 </div>

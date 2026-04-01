@@ -31,6 +31,7 @@ interface AuctionState {
   currentBidLog: { team: string; price: number }[];
   members: Set<string>;
   mode: '2025' | 'legends';
+  usernames: Record<string, string>; // socketId -> username
 }
 
 const rooms: Record<string, AuctionState> = {};
@@ -59,7 +60,7 @@ async function startServer() {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
-    socket.on("createRoom", ({ mode }: { mode: '2025' | 'legends' }) => {
+    socket.on("createRoom", ({ mode, username }: { mode: '2025' | 'legends', username: string }) => {
       const roomId = Math.floor(1000 + Math.random() * 9000).toString();
       const players = mode === 'legends' ? [...IPL_LEGENDS_PLAYERS] : [...IPL_2025_PLAYERS];
       
@@ -91,12 +92,22 @@ async function startServer() {
         currentBidLog: [],
         members: new Set([socket.id]),
         mode,
+        usernames: { [socket.id]: username || "Admin" },
       };
       socket.join(roomId);
       socket.emit("roomCreated", { roomId });
+      socket.emit("joinAuction", {
+        ...rooms[roomId],
+        members: Array.from(rooms[roomId].members),
+        isAdmin: true,
+        currentPlayer: null,
+        playerIndex: -1,
+        totalPlayers: rooms[roomId].players.length,
+      });
+      io.to(roomId).emit("teamUpdate", { teamOwners: rooms[roomId].teamOwners, usernames: rooms[roomId].usernames });
     });
 
-    socket.on("joinRoom", ({ roomId }) => {
+    socket.on("joinRoom", ({ roomId, username }) => {
       const room = rooms[roomId];
       if (!room) {
         socket.emit("error", "Room not found");
@@ -104,6 +115,7 @@ async function startServer() {
       }
       socket.join(roomId);
       room.members.add(socket.id);
+      room.usernames[socket.id] = username || `Guest_${socket.id.slice(0,4)}`;
       
       // If no admin, assign this user
       if (!room.adminId) {
@@ -119,7 +131,7 @@ async function startServer() {
         totalPlayers: room.players.length,
       });
       
-      io.to(roomId).emit("teamUpdate", room.teamOwners);
+      io.to(roomId).emit("teamUpdate", { teamOwners: room.teamOwners, usernames: room.usernames });
     });
 
     socket.on("selectTeam", ({ team, roomId }) => {
@@ -136,7 +148,9 @@ async function startServer() {
       });
 
       room.teamOwners[team] = socket.id;
-      io.to(roomId).emit("teamUpdate", room.teamOwners);
+      const username = room.usernames[socket.id];
+      io.to(roomId).emit("teamUpdate", { teamOwners: room.teamOwners, usernames: room.usernames });
+      io.to(roomId).emit("notification", { message: `${username} selected ${team}` });
     });
 
     socket.on("admin:startAuction", ({ roomId }) => {
@@ -185,7 +199,22 @@ async function startServer() {
       const player = room.players[room.currentPlayerIndex];
       const nextBid = room.currentBid === 0 ? player.basePrice : room.currentBid + getIncrement(room.currentBid);
 
-      if (room.teams[team].purse < nextBid) {
+      const teamData = room.teams[team];
+      
+      if (teamData.players.length >= 25) {
+        socket.emit("bidError", { message: "Squad full (Max 25 players)" });
+        return;
+      }
+      
+      if (player.isOverseas) {
+        const overseasCount = teamData.players.filter((p: Player) => p.isOverseas).length;
+        if (overseasCount >= 8) {
+          socket.emit("bidError", { message: "Overseas limit reached (Max 8)" });
+          return;
+        }
+      }
+
+      if (teamData.purse < nextBid) {
         socket.emit("bidError", { message: "Insufficient purse" });
         return;
       }
@@ -215,7 +244,7 @@ async function startServer() {
           Object.keys(room.teamOwners).forEach((t) => {
             if (room.teamOwners[t] === socket.id) delete room.teamOwners[t];
           });
-          io.to(roomId).emit("teamUpdate", room.teamOwners);
+          io.to(roomId).emit("teamUpdate", { teamOwners: room.teamOwners, usernames: room.usernames });
 
           if (room.adminId === socket.id) {
             const nextAdmin = Array.from(room.members)[0];
