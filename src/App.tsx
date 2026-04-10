@@ -247,7 +247,7 @@ export default function App() {
 
   if (view === 'lobby') {
     return (
-      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('" + iplLogoUrl + "')" }}>
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Indian_Premier_League_Official_Logo.svg/1200px-Indian_Premier_League_Official_Logo.svg.png')" }}>
         {/* White frost overlay so the IPL logo is visible but soft enough to refract beautifully through the glass UI */}
         <div className="absolute inset-0 bg-slate-50/70 z-0"></div>
         {/* Ambient glows */}
