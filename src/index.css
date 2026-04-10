@@ -8,14 +8,14 @@
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background-color: #09090b; /* zinc-950 */
+  background-color: #050505; /* very deep foundation to let glows shine */
+  color: #ffffff;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
 }
 
-/* Custom Scrollbar for a premium feel */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -24,9 +24,56 @@ h1, h2, h3, h4, h5, h6 {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Authentic Glassmorphism base */
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.3); /* Highlights top edge */
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Extra pop for interactive cards */
+.glass-interactive {
+  transition: all 0.3s ease;
+}
+.glass-interactive:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), 0 0 20px rgba(255,255,255,0.05);
+  transform: translateY(-2px);
+}
+
+/* Glass input fields */
+.glass-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.3s ease;
+}
+.glass-input:focus {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 212, 170, 0.5);
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 212, 170, 0.2);
+}
+
+/* Ambient glow utility */
+.ambient-glow-orange {
+  background: radial-gradient(circle, rgba(255,100,0,0.4) 0%, rgba(255,100,0,0) 70%);
+}
+.ambient-glow-blue {
+  background: radial-gradient(circle, rgba(0,100,255,0.4) 0%, rgba(0,100,255,0) 70%);
+}
+.ambient-glow-teal {
+  background: radial-gradient(circle, rgba(0,212,170,0.3) 0%, rgba(0,212,170,0) 70%);
 }
