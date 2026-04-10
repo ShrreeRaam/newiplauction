@@ -799,6 +799,24 @@ export default function App() {
         const upcomingSetPlayers = (gameState.allPlayers || []).filter(p => gameState.availableSets.includes(p.set || ''));
         const allUpcoming = [...currentSetRemaining, ...upcomingSetPlayers];
         
+        const groupedPlayers: Record<string, any[]> = {};
+        
+        if (gameState.currentSet && currentSetRemaining.length > 0) {
+            groupedPlayers[gameState.currentSet] = currentSetRemaining;
+        }
+
+        upcomingSetPlayers.forEach(p => {
+           const set = p.set || 'Uncategorized';
+           if (!groupedPlayers[set]) groupedPlayers[set] = [];
+           groupedPlayers[set].push(p);
+        });
+
+        const sortedSets = Object.keys(groupedPlayers).sort();
+        if (gameState.currentSet && sortedSets.includes(gameState.currentSet)) {
+           sortedSets.splice(sortedSets.indexOf(gameState.currentSet), 1);
+           sortedSets.unshift(gameState.currentSet);
+        }
+
         return (
           <div className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] space-y-6">
             <div className="flex items-center justify-between">
@@ -810,33 +828,39 @@ export default function App() {
                 {allUpcoming.length} players remaining
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {allUpcoming.map((player) => (
-                <div key={player.id} className="bg-[#0f0f14] p-4 rounded-xl border border-[#2a2a38] flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-[#1a1a24] border border-[#2a2a38] flex items-center justify-center font-bold text-[#00d4aa]">
-                      {player.name.split(' ').map((n: string) => n[0]).join('')}
-                    </div>
-                    <div>
-                      <p className="font-bold">{player.name}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] text-[#8888a0] uppercase font-black tracking-widest">{player.role.replace('_', ' ')}</span>
-                        {player.set && (
-                          <span className="text-[9px] bg-[#2a2a38] text-[#8888a0] px-1.5 py-0.5 rounded font-bold">
-                            {player.set}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-[#8888a0] uppercase font-bold">Base</p>
-                    <p className="text-sm font-bold">{formatPrice(player.basePrice)}</p>
-                  </div>
-                </div>
+            
+            <div className="space-y-8">
+              {sortedSets.map(set => (
+                 <div key={set} className="space-y-4">
+                   <h4 className="text-lg font-black text-white border-b border-[#2a2a38] pb-2 flex items-center justify-between">
+                     <span>SET {set}</span>
+                     {set === gameState.currentSet && <span className="text-[10px] bg-[#00d4aa]/20 text-[#00d4aa] px-2 py-1 rounded-full uppercase tracking-widest">Active Set</span>}
+                   </h4>
+                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                     {groupedPlayers[set].map((player) => (
+                        <div key={player.id} className="bg-[#0f0f14] p-4 rounded-xl border border-[#2a2a38] flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-full bg-[#1a1a24] border border-[#2a2a38] flex items-center justify-center font-bold text-[#00d4aa]">
+                              {player.name.split(' ').map((n: string) => n[0]).join('')}
+                            </div>
+                            <div>
+                              <p className="font-bold">{player.name}</p>
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className="text-[10px] text-[#8888a0] uppercase font-black tracking-widest">{player.role.replace('_', ' ')}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-[#8888a0] uppercase font-bold">Base</p>
+                            <p className="text-sm font-bold">{formatPrice(player.basePrice)}</p>
+                          </div>
+                        </div>
+                     ))}
+                   </div>
+                 </div>
               ))}
               {allUpcoming.length === 0 && (
-                <p className="col-span-full text-center text-[#8888a0] py-8 italic">No more players in the pool.</p>
+                <p className="text-center text-[#8888a0] py-8 italic">No more players in the pool.</p>
               )}
             </div>
           </div>
