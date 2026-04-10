@@ -17,6 +17,9 @@ interface TeamData {
 interface AuctionState {
   roomId: string;
   adminId: string;
+  allPlayers: Player[];
+  availableSets: string[];
+  currentSet: string | null;
   players: Player[];
   currentPlayerIndex: number;
   currentBid: number;
@@ -61,12 +64,16 @@ async function startServer() {
 
     socket.on("createRoom", ({ mode, username }: { mode: '2025' | 'legends', username: string }) => {
       const roomId = Math.floor(1000 + Math.random() * 9000).toString();
-      const players = mode === 'legends' ? [...IPL_LEGENDS_PLAYERS] : [...IPL_2025_PLAYERS];
-      
+      const allPlayers = mode === 'legends' ? [...IPL_LEGENDS_PLAYERS] : [...IPL_2025_PLAYERS];
+      const availableSets = Array.from(new Set(allPlayers.map((p) => p.set))).sort();
+
       rooms[roomId] = {
         roomId,
         adminId: socket.id,
-        players: players.sort(() => Math.random() - 0.5),
+        allPlayers,
+        availableSets,
+        currentSet: null,
+        players: [], // empty until a set is chosen
         currentPlayerIndex: -1,
         currentBid: 0,
         highestBidder: null,
@@ -95,15 +102,17 @@ async function startServer() {
       };
       socket.join(roomId);
       socket.emit("roomCreated", { roomId });
+      
+      const r = rooms[roomId];
       socket.emit("joinAuction", {
-        ...rooms[roomId],
-        members: Array.from(rooms[roomId].members),
+        ...r,
+        members: Array.from(r.members),
         isAdmin: true,
         currentPlayer: null,
         playerIndex: -1,
-        totalPlayers: rooms[roomId].players.length,
+        totalPlayers: 0,
       });
-      io.to(roomId).emit("teamUpdate", { teamOwners: rooms[roomId].teamOwners, usernames: rooms[roomId].usernames });
+      io.to(roomId).emit("teamUpdate", { teamOwners: r.teamOwners, usernames: r.usernames });
     });
 
     socket.on("joinRoom", ({ roomId, username }) => {
@@ -116,7 +125,6 @@ async function startServer() {
       room.members.add(socket.id);
       room.usernames[socket.id] = username || `Guest_${socket.id.slice(0,4)}`;
       
-      // If no admin, assign this user
       if (!room.adminId) {
         room.adminId = socket.id;
       }
@@ -131,6 +139,34 @@ async function startServer() {
       });
       
       io.to(roomId).emit("teamUpdate", { teamOwners: room.teamOwners, usernames: room.usernames });
+    });
+
+    socket.on("admin:selectSet", ({ roomId, setId }) => {
+      const room = rooms[roomId];
+      if (!room || room.adminId !== socket.id) return;
+
+      room.currentSet = setId;
+      room.players = room.allPlayers.filter(p => p.set === setId).sort(() => Math.random() - 0.5);
+      room.currentPlayerIndex = -1;
+      room.isStarted = false;
+      room.currentBid = 0;
+      room.highestBidder = null;
+      room.highestBidderId = null;
+      room.timer = TIMER_SECONDS;
+      room.currentBidLog = [];
+      
+      // Update available sets
+      room.availableSets = room.availableSets.filter(s => s !== setId);
+
+      io.to(roomId).emit("setUpdated", {
+        currentSet: room.currentSet,
+        availableSets: room.availableSets,
+        players: room.players,
+        totalPlayers: room.players.length,
+        currentPlayerIndex: -1,
+        isStarted: false,
+        currentPlayer: null,
+      });
     });
 
     socket.on("selectTeam", ({ team, roomId }) => {

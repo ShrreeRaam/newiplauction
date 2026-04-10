@@ -60,6 +60,8 @@ export default function App() {
     isStarted: boolean;
     isPaused: boolean;
     mode: '2025' | 'legends';
+    availableSets: string[];
+    currentSet: string | null;
   }>({
     currentPlayer: null,
     players: [],
@@ -76,6 +78,8 @@ export default function App() {
     isStarted: false,
     isPaused: false,
     mode: '2025',
+    availableSets: [],
+    currentSet: null,
   });
 
   const [showSoldOverlay, setShowSoldOverlay] = useState(false);
@@ -157,6 +161,14 @@ export default function App() {
 
     socket.on('auctionPaused', ({ isPaused }) => {
       setGameState(prev => ({ ...prev, isPaused }));
+    });
+
+    socket.on('setUpdated', (data) => {
+      setGameState(prev => ({ ...prev, ...data }));
+    });
+
+    socket.on('auctionComplete', () => {
+      setGameState(prev => ({ ...prev, players: [], currentPlayer: null, isStarted: false }));
     });
 
     return () => {
@@ -433,7 +445,10 @@ export default function App() {
             <div className="p-2 bg-[#00d4aa]/10 rounded-lg">
               <Gavel className="w-6 h-6 text-[#00d4aa]" />
             </div>
-            <h1 className="text-xl font-bold">IPL Auction Simulator</h1>
+            <div className="flex flex-col">
+              <h1 className="text-xl font-bold">IPL Auction Simulator</h1>
+              {gameState.currentSet && <span className="text-[10px] text-[#00d4aa] font-black uppercase tracking-widest mt-0.5">Currently: Set {gameState.currentSet}</span>}
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
@@ -451,9 +466,24 @@ export default function App() {
             {isAdmin && (
               <div className="flex flex-col items-end gap-2">
                 <div className="flex gap-2">
-                  {!gameState.isStarted ? (
+                  {gameState.players.length === 0 ? (
+                    <div className="flex bg-[#0f0f14] border border-[#2a2a38] rounded-lg p-1">
+                      <select 
+                        onChange={(e) => { 
+                          if(e.target.value) {
+                            socket.emit('admin:selectSet', { roomId, setId: e.target.value });
+                          }
+                        }}
+                        className="bg-transparent text-[#00d4aa] text-sm font-bold focus:outline-none px-2"
+                        value=""
+                      >
+                        <option value="" disabled className="text-[#8888a0]">Select Next Set</option>
+                        {gameState.availableSets?.map((s: string) => <option key={s} value={s} className="text-white bg-[#0f0f14]">{s}</option>)}
+                      </select>
+                    </div>
+                  ) : !gameState.isStarted ? (
                     <button onClick={handleStart} className="px-4 py-1.5 bg-[#00d4aa] text-[#0f0f14] font-bold rounded-lg text-sm hover:bg-[#00a884]">
-                      Start Auction
+                      Start Set {gameState.currentSet}
                     </button>
                   ) : (
                     <>
@@ -476,7 +506,7 @@ export default function App() {
                     "text-[10px] font-black uppercase tracking-widest",
                     gameState.isPaused ? "text-yellow-500" : "text-[#00d4aa]"
                   )}>
-                    {gameState.isPaused ? "Auction Paused" : "Auction in Progress"}
+                    {gameState.isPaused ? "Auction Paused" : `Set ${gameState.currentSet} in Progress`}
                   </p>
                 )}
               </div>
