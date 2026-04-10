@@ -240,6 +240,201 @@ export default function App() {
   const nextBidAmount = gameState.currentBid === 0 
     ? (gameState.currentPlayer?.basePrice || 0) 
     : gameState.currentBid + getIncrement(gameState.currentBid);
+    currentPlayer: Player | null;
+    players: Player[];
+    currentBid: number;
+    highestBidder: string | null;
+    timer: number;
+    soldPlayers: { player: Player; team: string; price: number }[];
+    teams: Record<string, { purse: number; players: Player[] }>;
+    teamOwners: Record<string, string>;
+    usernames: Record<string, string>;
+    currentBidLog: { team: string; price: number }[];
+    playerIndex: number;
+    totalPlayers: number;
+    isStarted: boolean;
+    isPaused: boolean;
+    mode: '2025' | 'legends';
+    availableSets: string[];
+    currentSet: string | null;
+    allPlayers?: Player[];
+  }>({
+    currentPlayer: null,
+    players: [],
+    currentBid: 0,
+    highestBidder: null,
+    timer: 30,
+    soldPlayers: [],
+    teams: {},
+    teamOwners: {},
+    usernames: {},
+    currentBidLog: [],
+    playerIndex: -1,
+    totalPlayers: 0,
+    isStarted: false,
+    isPaused: false,
+    mode: '2025',
+    availableSets: [],
+    currentSet: null,
+  });
+
+  const [showSoldOverlay, setShowSoldOverlay] = useState(false);
+  const [lastSoldPlayer, setLastSoldPlayer] = useState<any>(null);
+  const [bidFlash, setBidFlash] = useState(false);
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.on('roomCreated', ({ roomId }) => {
+      setRoomId(roomId);
+      setIsAdmin(true);
+      setView('auction');
+    });
+
+    socket.on('joinAuction', (state) => {
+      setGameState(state);
+      setRoomId(state.roomId);
+      setIsAdmin(state.adminId === socket.id);
+      setView('auction');
+    });
+
+    socket.on('playerUpdate', (data) => {
+      setGameState(prev => ({ ...prev, ...data }));
+      setBidError('');
+    });
+
+    socket.on('newBid', (data) => {
+      setGameState(prev => ({ ...prev, ...data }));
+    });
+
+    socket.on('timerUpdate', ({ timer }) => {
+      setGameState(prev => ({ ...prev, timer }));
+    });
+
+    socket.on('purseUpdate', (teams) => {
+      setGameState(prev => ({ ...prev, teams }));
+    });
+
+    socket.on('soldPlayers', (soldPlayers) => {
+      setGameState(prev => ({ ...prev, soldPlayers }));
+    });
+
+    socket.on('teamUpdate', ({ teamOwners, usernames }) => {
+      setGameState(prev => ({ ...prev, teamOwners, usernames }));
+    });
+    
+    socket.on('notification', ({ message }) => {
+      setNotification(message);
+      setTimeout(() => setNotification(null), 3000);
+    });
+
+    socket.on('bidError', ({ message }) => {
+      setBidError(message);
+      setTimeout(() => setBidError(''), 3000);
+    });
+
+    socket.on('playerSold', (data) => {
+      setGameState(prev => ({ ...prev, ...data.gameState }));
+      setLastSoldPlayer({ ...data.player, team: data.team, price: data.price });
+      setShowSoldOverlay(true);
+      setTimeout(() => setShowSoldOverlay(false), 3000);
+    });
+
+    socket.on('bidUpdated', (data) => {
+      setGameState(prev => ({ ...prev, ...data }));
+      setBidFlash(true);
+      setTimeout(() => setBidFlash(false), 500);
+    });
+
+    socket.on('error', (msg) => {
+      setError(msg);
+      setTimeout(() => setError(''), 3000);
+    });
+
+    socket.on('adminChanged', ({ isAdmin }) => {
+      setIsAdmin(isAdmin);
+    });
+
+    socket.on('auctionPaused', ({ isPaused }) => {
+      setGameState(prev => ({ ...prev, isPaused }));
+    });
+
+    socket.on('setUpdated', (data) => {
+      setGameState(prev => ({ ...prev, ...data }));
+    });
+
+    socket.on('auctionComplete', () => {
+      setGameState(prev => ({ ...prev, players: [], currentPlayer: null, isStarted: false }));
+    });
+
+    return () => {
+      socket.off('roomCreated');
+      socket.off('joinAuction');
+      socket.off('playerUpdate');
+      socket.off('newBid');
+      socket.off('timerUpdate');
+      socket.off('purseUpdate');
+      socket.off('soldPlayers');
+      socket.off('teamUpdate');
+      socket.off('bidError');
+      socket.off('error');
+      socket.off('adminChanged');
+      socket.off('auctionPaused');
+      socket.off('playerSold');
+      socket.off('bidUpdated');
+    };
+  }, []);
+
+  const handleCreateRoom = () => {
+    if (!username.trim()) {
+      setError('Please enter a username');
+      return;
+    }
+    socket.emit('createRoom', { mode: selectedMode, username });
+  };
+  
+  const handleJoinRoom = () => {
+    if (!username.trim()) {
+      setError('Please enter a username');
+      return;
+    }
+    if (joinId.length === 4) {
+      socket.emit('joinRoom', { roomId: joinId, username });
+    } else {
+      setError('Enter a 4-digit Room ID');
+    }
+  };
+
+  const handleSelectTeam = (team: string) => {
+    socket.emit('selectTeam', { team, roomId });
+  };
+
+  const handleBid = () => {
+    socket.emit('bid', { roomId });
+  };
+
+  const handleStart = () => {
+    socket.emit('admin:startAuction', { roomId });
+  };
+
+  const handleNext = () => {
+    socket.emit('admin:nextPlayer', { roomId });
+  };
+
+  const handlePause = () => {
+    socket.emit('admin:pauseAuction', { roomId });
+  };
+
+  const getIncrement = (price: number) => {
+    if (price < 10000000) return 500000; // < 1 Cr  → 5 lakh
+    if (price < 20000000) return 1000000; // 1–2 Cr  → 10 lakh
+    if (price < 50000000) return 2000000; // 2–5 Cr  → 20 lakh
+    return 2500000; // >= 5 Cr → 25 lakh
+  };
+
+  const nextBidAmount = gameState.currentBid === 0 
+    ? (gameState.currentPlayer?.basePrice || 0) 
+    : gameState.currentBid + getIncrement(gameState.currentBid);
 
   const myTeam = Object.keys(gameState.teamOwners || {}).find(t => gameState.teamOwners?.[t] === socket.id);
   const myPurse = myTeam ? gameState.teams?.[myTeam]?.purse : 0;
@@ -247,12 +442,8 @@ export default function App() {
 
   if (view === 'lobby') {
     return (
-      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('" + iplLogoUrl + "')" }}>
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Indian_Premier_League_Official_Logo.svg/1200px-Indian_Premier_League_Official_Logo.svg.png')" }}>
         {/* White frost overlay so the IPL logo is visible but soft enough to refract beautifully through the glass UI */}
-        <div className="absolute inset-0 bg-slate-50/70 z-0"></div>
-        {/* Ambient glows */}
-        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-900/30 blur-[120px] pointer-events-none"></div>
-        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-900/30 blur-[120px] pointer-events-none"></div>
         
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
