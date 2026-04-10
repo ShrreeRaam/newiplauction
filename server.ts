@@ -39,11 +39,10 @@ const TEAM_PURSE = 1200000000; // 120 Crore
 const TIMER_SECONDS = 30;
 
 function getIncrement(price: number) {
-  if (price < 10000000) return 2000000; // < 1 Cr  → 20 lakh
-  if (price < 20000000) return 2500000; // 1–2 Cr  → 25 lakh
-  if (price < 50000000) return 5000000; // 2–5 Cr  → 50 lakh
-  if (price < 100000000) return 10000000; // 5–10 Cr → 1 Cr
-  return 20000000; // > 10 Cr → 2 Cr
+  if (price < 10000000) return 500000; // < 1 Cr  → 5 lakh
+  if (price < 20000000) return 1000000; // 1–2 Cr  → 10 lakh
+  if (price < 50000000) return 2000000; // 2–5 Cr  → 20 lakh
+  return 2500000; // >= 5 Cr → 25 lakh
 }
 
 async function startServer() {
