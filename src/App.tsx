@@ -62,6 +62,7 @@ export default function App() {
     mode: '2025' | 'legends';
     availableSets: string[];
     currentSet: string | null;
+    allPlayers?: Player[];
   }>({
     currentPlayer: null,
     players: [],
@@ -793,6 +794,12 @@ export default function App() {
     )}
 
     {view === 'upcoming' && (
+      (() => {
+        const currentSetRemaining = gameState.players.slice(gameState.playerIndex + 1);
+        const upcomingSetPlayers = (gameState.allPlayers || []).filter(p => gameState.availableSets.includes(p.set || ''));
+        const allUpcoming = [...currentSetRemaining, ...upcomingSetPlayers];
+        
+        return (
           <div className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] space-y-6">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-bold flex items-center gap-2">
@@ -800,19 +807,26 @@ export default function App() {
                 Upcoming Players
               </h3>
               <p className="text-sm text-[#8888a0]">
-                {gameState.players.length - (gameState.playerIndex + 1)} players remaining
+                {allUpcoming.length} players remaining
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {gameState.players.slice(gameState.playerIndex + 1).map((player, i) => (
+              {allUpcoming.map((player) => (
                 <div key={player.id} className="bg-[#0f0f14] p-4 rounded-xl border border-[#2a2a38] flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-full bg-[#1a1a24] border border-[#2a2a38] flex items-center justify-center font-bold text-[#00d4aa]">
-                      {player.name.split(' ').map(n => n[0]).join('')}
+                      {player.name.split(' ').map((n: string) => n[0]).join('')}
                     </div>
                     <div>
                       <p className="font-bold">{player.name}</p>
-                      <p className="text-[10px] text-[#8888a0] uppercase font-black tracking-widest">{player.role.replace('_', ' ')}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] text-[#8888a0] uppercase font-black tracking-widest">{player.role.replace('_', ' ')}</span>
+                        {player.set && (
+                          <span className="text-[9px] bg-[#2a2a38] text-[#8888a0] px-1.5 py-0.5 rounded font-bold">
+                            {player.set}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="text-right">
@@ -821,12 +835,14 @@ export default function App() {
                   </div>
                 </div>
               ))}
-              {gameState.players.slice(gameState.playerIndex + 1).length === 0 && (
+              {allUpcoming.length === 0 && (
                 <p className="col-span-full text-center text-[#8888a0] py-8 italic">No more players in the pool.</p>
               )}
             </div>
           </div>
-        )}
+        );
+      })()
+    )}
 
         {view === 'squads' && (
           <div className="space-y-6">
