@@ -29,7 +29,7 @@ const TEAM_COLORS: Record<string, { bg: string; text: string; border: string; sh
   PBKS: { bg: "bg-[#D71920]", text: "text-[#D1D3D4]", border: "border-[#D1D3D4]", shadow: "shadow-[0_0_50px_rgba(215,25,32,0.5)]" },
   GT: { bg: "bg-[#1B2133]", text: "text-[#CBA92B]", border: "border-[#CBA92B]", shadow: "shadow-[0_0_50px_rgba(27,33,51,0.5)]" },
   LSG: { bg: "bg-[#E0202D]", text: "text-[#0057A3]", border: "border-[#0057A3]", shadow: "shadow-[0_0_50px_rgba(224,32,45,0.5)]" },
-  Unsold: { bg: "bg-gray-800", text: "text-white", border: "border-white", shadow: "shadow-[0_0_50px_rgba(255,255,255,0.2)]" }
+  Unsold: { bg: "bg-gray-800", text: "text-zinc-100", border: "border-white", shadow: "shadow-[0_0_50px_rgba(255,255,255,0.2)]" }
 };
 
 export default function App() {
@@ -247,31 +247,35 @@ export default function App() {
 
   if (view === 'lobby') {
     return (
-      <div className="min-h-screen bg-[#0f0f14] text-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        {/* Ambient glows */}
+        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-900/30 blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-900/30 blur-[120px] pointer-events-none"></div>
+        
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full space-y-8 bg-[#1a1a24] p-8 rounded-2xl border border-[#2a2a38] shadow-2xl"
+          className="max-w-md w-full space-y-8 glass-panel p-8 relative z-10"
         >
           <div className="text-center space-y-2">
             <div className="flex justify-center">
-              <div className="p-4 bg-[#00d4aa]/10 rounded-full">
-                <Gavel className="w-12 h-12 text-[#00d4aa]" />
+              <div className="p-4 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] rounded-full">
+                <Gavel className="w-12 h-12 text-cyan-400 text-glow" />
               </div>
             </div>
             <h1 className="text-3xl font-bold tracking-tight">IPL Auction</h1>
-            <p className="text-[#8888a0]">Real-time bidding with friends</p>
+            <p className="text-zinc-400">Real-time bidding with friends</p>
           </div>
 
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#8888a0] uppercase tracking-widest px-1">Your Name</label>
+              <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-1">Your Name</label>
               <input
                 type="text"
                 placeholder="Enter Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-[#0f0f14] border border-[#2a2a38] rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-[#00d4aa] transition-colors"
+                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-cyan-500 transition-colors"
               />
             </div>
 
@@ -282,8 +286,8 @@ export default function App() {
                   className={cn(
                     "p-4 rounded-xl border-2 transition-all text-center space-y-1",
                     selectedMode === '2025' 
-                      ? "border-[#00d4aa] bg-[#00d4aa]/10 text-[#00d4aa]" 
-                      : "border-[#2a2a38] bg-[#0f0f14] text-[#8888a0] hover:border-[#3a3a4a]"
+                      ? "border-cyan-500 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] text-cyan-400 text-glow" 
+                      : "border-white/5 bg-black/20 text-zinc-400 hover:border-cyan-500/30"
                   )}
                 >
                   <div className="font-bold text-sm">IPL 2025</div>
@@ -294,8 +298,8 @@ export default function App() {
                   className={cn(
                     "p-4 rounded-xl border-2 transition-all text-center space-y-1",
                     selectedMode === 'legends' 
-                      ? "border-[#00d4aa] bg-[#00d4aa]/10 text-[#00d4aa]" 
-                      : "border-[#2a2a38] bg-[#0f0f14] text-[#8888a0] hover:border-[#3a3a4a]"
+                      ? "border-cyan-500 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] text-cyan-400 text-glow" 
+                      : "border-white/5 bg-black/20 text-zinc-400 hover:border-cyan-500/30"
                   )}
                 >
                   <div className="font-bold text-sm">LEGENDS</div>
@@ -305,7 +309,7 @@ export default function App() {
 
               <button
                 onClick={handleCreateRoom}
-                className="w-full py-4 bg-[#00d4aa] hover:bg-[#00a884] text-[#0f0f14] font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none hover:bg-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.6)] text-zinc-950 font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
               >
                 <Play className="w-5 h-5" />
                 Create New Room
@@ -314,10 +318,10 @@ export default function App() {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-[#2a2a38]"></div>
+                <div className="w-full border-t border-white/5"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-[#1a1a24] px-2 text-[#8888a0] font-bold">OR</span>
+                <span className="glass-panel px-2 text-zinc-400 font-bold">OR</span>
               </div>
             </div>
 
@@ -329,11 +333,11 @@ export default function App() {
                   maxLength={4}
                   value={joinId}
                   onChange={(e) => setJoinId(e.target.value)}
-                  className="flex-1 bg-[#0f0f14] border border-[#2a2a38] rounded-xl px-4 py-3 text-center text-xl tracking-[0.5em] focus:outline-none focus:border-[#00d4aa] transition-colors"
+                  className="flex-1 bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-center text-xl tracking-[0.5em] focus:outline-none focus:border-cyan-500 transition-colors"
                 />
                 <button
                   onClick={handleJoinRoom}
-                  className="px-6 bg-[#2a2a38] hover:bg-[#3a3a4a] font-bold rounded-xl transition-all active:scale-95"
+                  className="px-6 bg-white/5 hover:bg-white/10 font-bold rounded-xl transition-all active:scale-95"
                 >
                   Join
                 </button>
@@ -347,7 +351,11 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f0f14] text-white p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-6 lg:p-8 relative overflow-hidden">
+      {/* Ambient glows */}
+      <div className="absolute top-[0%] left-[10%] w-[800px] h-[800px] rounded-full bg-cyan-500/5 blur-[150px] pointer-events-none z-0"></div>
+      <div className="absolute bottom-[-10%] right-[0%] w-[600px] h-[600px] rounded-full bg-indigo-500/5 blur-[150px] pointer-events-none z-0"></div>
+      <div className="relative z-10">
       {/* Notification Banner */}
       <AnimatePresence>
         {notification && (
@@ -355,42 +363,42 @@ export default function App() {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-[#00d4aa] text-[#0f0f14] px-6 py-3 rounded-full font-bold shadow-[0_0_30px_rgba(0,212,170,0.4)] flex items-center gap-3 border-2 border-white/20"
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950 px-6 py-3 rounded-full font-bold shadow-[0_0_30px_rgba(0,212,170,0.4)] flex items-center gap-3 border-2 border-cyan-500/30"
           >
-            <div className="w-2 h-2 bg-[#0f0f14] rounded-full animate-pulse" />
+            <div className="w-2 h-2 bg-black/20 rounded-full animate-pulse" />
             {notification}
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Header with Mode and Room ID */}
-      <div className="max-w-7xl mx-auto mb-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-[#1a1a24] p-4 rounded-2xl border border-[#2a2a38]">
+      <div className="max-w-7xl mx-auto mb-6 flex flex-col md:flex-row justify-between items-center gap-4 glass-panel p-4 rounded-2xl border border-white/5">
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-[#00d4aa]/10 rounded-xl">
-            <Trophy className="w-6 h-6 text-[#00d4aa]" />
+          <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] rounded-xl">
+            <Trophy className="w-6 h-6 text-cyan-400 text-glow" />
           </div>
           <div>
             <h2 className="text-xl font-bold tracking-tight">
               {gameState.mode === 'legends' ? "IPL Legends Auction" : "IPL 2025 Mega Auction"}
             </h2>
-            <p className="text-xs text-[#8888a0] font-medium uppercase tracking-wider">
+            <p className="text-xs text-zinc-400 font-medium uppercase tracking-wider">
               {gameState.mode === 'legends' ? "Players from 2020 - 2026" : "Official 2025 & 2026 Registered Players"}
             </p>
           </div>
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="px-4 py-2 bg-[#0f0f14] rounded-lg border border-[#2a2a38] flex items-center gap-2">
-            <span className="text-xs text-[#8888a0] font-bold uppercase">Room ID:</span>
-            <span className="text-lg font-mono font-bold text-[#00d4aa]">{roomId}</span>
+          <div className="px-4 py-2 bg-black/20 rounded-lg border border-white/5 flex items-center gap-2">
+            <span className="text-xs text-zinc-400 font-bold uppercase">Room ID:</span>
+            <span className="text-lg font-mono font-bold text-cyan-400 text-glow">{roomId}</span>
             <button 
               onClick={() => {
                 navigator.clipboard.writeText(roomId);
                 // Simple feedback could be added here
               }}
-              className="p-1 hover:bg-[#2a2a38] rounded transition-colors"
+              className="p-1 hover:bg-white/5 rounded transition-colors"
             >
-              <Copy className="w-4 h-4 text-[#8888a0]" />
+              <Copy className="w-4 h-4 text-zinc-400" />
             </button>
           </div>
         </div>
@@ -407,8 +415,8 @@ export default function App() {
           >
             <div className={cn(
               "px-12 py-8 rounded-2xl text-center transform -rotate-3 border-4",
-              TEAM_COLORS[lastSoldPlayer.team]?.bg || "bg-[#00d4aa]",
-              TEAM_COLORS[lastSoldPlayer.team]?.text || "text-[#0f0f14]",
+              TEAM_COLORS[lastSoldPlayer.team]?.bg || "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none",
+              TEAM_COLORS[lastSoldPlayer.team]?.text || "text-zinc-950",
               TEAM_COLORS[lastSoldPlayer.team]?.border || "border-white",
               TEAM_COLORS[lastSoldPlayer.team]?.shadow || "shadow-[0_0_50px_rgba(0,212,170,0.5)]"
             )}>
@@ -441,26 +449,26 @@ export default function App() {
 
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-center gap-4 bg-[#1a1a24] p-4 rounded-2xl border border-[#2a2a38]">
+        <header className="flex flex-col md:flex-row justify-between items-center gap-4 glass-panel p-4 rounded-2xl border border-white/5">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-[#00d4aa]/10 rounded-lg">
-              <Gavel className="w-6 h-6 text-[#00d4aa]" />
+            <div className="p-2 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] rounded-lg">
+              <Gavel className="w-6 h-6 text-cyan-400 text-glow" />
             </div>
             <div className="flex flex-col">
               <h1 className="text-xl font-bold">IPL Auction Simulator</h1>
-              {gameState.currentSet && <span className="text-[10px] text-[#00d4aa] font-black uppercase tracking-widest mt-0.5">Currently: Set {gameState.currentSet}</span>}
+              {gameState.currentSet && <span className="text-[10px] text-cyan-400 text-glow font-black uppercase tracking-widest mt-0.5">Currently: Set {gameState.currentSet}</span>}
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center bg-[#0f0f14] px-3 py-1.5 rounded-lg border border-[#2a2a38] gap-2">
-              <span className="text-xs text-[#8888a0] font-bold uppercase">Room ID</span>
-              <span className="font-mono font-bold text-[#00d4aa]">{roomId}</span>
+            <div className="flex items-center bg-black/20 px-3 py-1.5 rounded-lg border border-white/5 gap-2">
+              <span className="text-xs text-zinc-400 font-bold uppercase">Room ID</span>
+              <span className="font-mono font-bold text-cyan-400 text-glow">{roomId}</span>
               <button 
                 onClick={() => navigator.clipboard.writeText(roomId)}
-                className="p-1 hover:bg-[#2a2a38] rounded transition-colors"
+                className="p-1 hover:bg-white/5 rounded transition-colors"
               >
-                <Copy className="w-4 h-4 text-[#8888a0]" />
+                <Copy className="w-4 h-4 text-zinc-400" />
               </button>
             </div>
 
@@ -468,34 +476,34 @@ export default function App() {
               <div className="flex flex-col items-end gap-2">
                 <div className="flex gap-2">
                   {gameState.players.length === 0 ? (
-                    <div className="flex bg-[#0f0f14] border border-[#2a2a38] rounded-lg p-1">
+                    <div className="flex bg-black/20 border border-white/5 rounded-lg p-1">
                       <select 
                         onChange={(e) => { 
                           if(e.target.value) {
                             socket.emit('admin:selectSet', { roomId, setId: e.target.value });
                           }
                         }}
-                        className="bg-transparent text-[#00d4aa] text-sm font-bold focus:outline-none px-2"
+                        className="bg-transparent text-cyan-400 text-glow text-sm font-bold focus:outline-none px-2"
                         value=""
                       >
-                        <option value="" disabled className="text-[#8888a0]">Select Next Set</option>
-                        {gameState.availableSets?.map((s: string) => <option key={s} value={s} className="text-white bg-[#0f0f14]">{s}</option>)}
+                        <option value="" disabled className="text-zinc-400">Select Next Set</option>
+                        {gameState.availableSets?.map((s: string) => <option key={s} value={s} className="text-zinc-100 bg-black/20">{s}</option>)}
                       </select>
                     </div>
                   ) : !gameState.isStarted ? (
-                    <button onClick={handleStart} className="px-4 py-1.5 bg-[#00d4aa] text-[#0f0f14] font-bold rounded-lg text-sm hover:bg-[#00a884]">
+                    <button onClick={handleStart} className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950 font-bold rounded-lg text-sm hover:bg-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.6)]">
                       Start Set {gameState.currentSet}
                     </button>
                   ) : (
                     <>
                       <button onClick={handlePause} className={cn(
                         "px-4 py-1.5 font-bold rounded-lg text-sm flex items-center gap-2",
-                        gameState.isPaused ? "bg-green-500 text-white hover:bg-green-600" : "bg-yellow-500 text-[#0f0f14] hover:bg-yellow-600"
+                        gameState.isPaused ? "bg-green-500 text-zinc-100 hover:bg-green-600" : "bg-yellow-500 text-zinc-950 hover:bg-yellow-600"
                       )}>
                         {gameState.isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
                         {gameState.isPaused ? "Resume" : "Pause"}
                       </button>
-                      <button onClick={handleNext} className="px-4 py-1.5 bg-orange-500 text-white font-bold rounded-lg text-sm hover:bg-orange-600 flex items-center gap-2">
+                      <button onClick={handleNext} className="px-4 py-1.5 bg-orange-500 text-zinc-100 font-bold rounded-lg text-sm hover:bg-orange-600 flex items-center gap-2">
                         <SkipForward className="w-4 h-4" />
                         Next / Sold
                       </button>
@@ -505,7 +513,7 @@ export default function App() {
                 {gameState.isStarted && (
                   <p className={cn(
                     "text-[10px] font-black uppercase tracking-widest",
-                    gameState.isPaused ? "text-yellow-500" : "text-[#00d4aa]"
+                    gameState.isPaused ? "text-yellow-500" : "text-cyan-400 text-glow"
                   )}>
                     {gameState.isPaused ? "Auction Paused" : `Set ${gameState.currentSet} in Progress`}
                   </p>
@@ -516,12 +524,12 @@ export default function App() {
         </header>
 
         {/* Navigation Tabs */}
-        <nav className="flex gap-2 bg-[#1a1a24] p-1 rounded-xl border border-[#2a2a38]">
+        <nav className="flex gap-2 glass-panel p-1 rounded-xl border border-white/5">
           <button
             onClick={() => setView('auction')}
             className={cn(
               "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all",
-              view === 'auction' ? "bg-[#00d4aa] text-[#0f0f14]" : "text-[#8888a0] hover:text-white hover:bg-[#2a2a38]"
+              view === 'auction' ? "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
             )}
           >
             <LayoutDashboard className="w-4 h-4" />
@@ -531,7 +539,7 @@ export default function App() {
             onClick={() => setView('upcoming')}
             className={cn(
               "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all",
-              view === 'upcoming' ? "bg-[#00d4aa] text-[#0f0f14]" : "text-[#8888a0] hover:text-white hover:bg-[#2a2a38]"
+              view === 'upcoming' ? "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
             )}
           >
             <SkipForward className="w-4 h-4" />
@@ -541,7 +549,7 @@ export default function App() {
             onClick={() => setView('squads')}
             className={cn(
               "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all",
-              view === 'squads' ? "bg-[#00d4aa] text-[#0f0f14]" : "text-[#8888a0] hover:text-white hover:bg-[#2a2a38]"
+              view === 'squads' ? "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
             )}
           >
             <Users className="w-4 h-4" />
@@ -554,8 +562,8 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Panel: Current Player & Owners */}
           <div className="lg:col-span-3 space-y-6">
-            <section className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] flex flex-col items-center text-center relative overflow-hidden">
-              <h3 className="w-full text-left text-xs font-bold text-[#8888a0] uppercase tracking-wider mb-6">Current Player</h3>
+            <section className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center relative overflow-hidden">
+              <h3 className="w-full text-left text-xs font-bold text-zinc-400 uppercase tracking-wider mb-6">Current Player</h3>
               
               <AnimatePresence mode="wait">
                 {gameState.currentPlayer ? (
@@ -567,11 +575,11 @@ export default function App() {
                     className="space-y-4 w-full"
                   >
                     <div className="relative mx-auto">
-                      <div className="w-32 h-32 bg-[#0f0f14] rounded-full border-2 border-[#2a2a38] flex items-center justify-center text-4xl font-bold text-[#00d4aa] overflow-hidden">
+                      <div className="w-32 h-32 bg-black/20 rounded-full border-2 border-white/5 flex items-center justify-center text-4xl font-bold text-cyan-400 text-glow overflow-hidden">
                         {gameState.currentPlayer.name.split(' ').map(n => n[0]).join('')}
                       </div>
                       {gameState.timer === 0 && (
-                        <div className="absolute top-0 right-0 bg-[#00d4aa] text-[#0f0f14] text-[10px] font-black px-2 py-1 rounded-full uppercase">
+                        <div className="absolute top-0 right-0 bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950 text-[10px] font-black px-2 py-1 rounded-full uppercase">
                           Sold
                         </div>
                       )}
@@ -594,19 +602,19 @@ export default function App() {
                     </div>
 
                     <div className="pt-4 space-y-1">
-                      <p className="text-xs text-[#8888a0] uppercase font-bold">Base Price</p>
-                      <p className="text-xl font-bold text-white flex items-center justify-center gap-1">
+                      <p className="text-xs text-zinc-400 uppercase font-bold">Base Price</p>
+                      <p className="text-xl font-bold text-zinc-100 flex items-center justify-center gap-1">
                         <IndianRupee className="w-4 h-4" />
                         {formatPrice(gameState.currentPlayer.basePrice)}
                       </p>
                     </div>
 
-                    <p className="text-[10px] text-[#8888a0] font-bold uppercase mt-4">
+                    <p className="text-[10px] text-zinc-400 font-bold uppercase mt-4">
                       Player {gameState.playerIndex + 1} of {gameState.totalPlayers}
                     </p>
                   </motion.div>
                 ) : (
-                  <div className="flex-1 flex items-center justify-center text-[#8888a0] italic text-sm">
+                  <div className="flex-1 flex items-center justify-center text-zinc-400 italic text-sm">
                     {gameState.isStarted ? "Auction Complete" : "Waiting to start..."}
                   </div>
                 )}
@@ -614,26 +622,26 @@ export default function App() {
             </section>
 
             {/* Team Owners */}
-            <section className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38]">
-              <h3 className="text-xs font-bold text-[#8888a0] uppercase tracking-wider mb-4 flex items-center gap-2">
+            <section className="glass-panel p-6 rounded-2xl border border-white/5">
+              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 Team Owners
               </h3>
               <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
                 {Object.entries(gameState.teamOwners || {}).length > 0 ? (
                   Object.entries(gameState.teamOwners || {}).map(([team, ownerId]) => (
-                    <div key={team} className="flex items-center justify-between p-3 bg-[#0f0f14] rounded-xl border border-[#2a2a38]">
+                    <div key={team} className="flex items-center justify-between p-3 bg-black/20 rounded-xl border border-white/5">
                       <div className="flex items-center gap-3">
                         <img src={TEAM_LOGOS[team]} alt={team} className="w-6 h-6 object-contain" />
                         <span className="font-bold text-sm">{team}</span>
                       </div>
-                      <span className="text-xs font-bold text-[#00d4aa] truncate max-w-[120px] text-right">
+                      <span className="text-xs font-bold text-cyan-400 text-glow truncate max-w-[120px] text-right">
                         {gameState.usernames?.[ownerId as string] || "Unknown"}
                       </span>
                     </div>
                   ))
                 ) : (
-                  <p className="text-[#8888a0] italic text-xs text-center py-4">No teams selected yet.</p>
+                  <p className="text-zinc-400 italic text-xs text-center py-4">No teams selected yet.</p>
                 )}
               </div>
             </section>
@@ -641,52 +649,52 @@ export default function App() {
 
           {/* Center Panel: Bidding & Timer */}
           <div className="lg:col-span-6 space-y-6">
-            <section className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] space-y-6">
+            <section className="glass-panel p-6 rounded-2xl border border-white/5 space-y-6">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
-                  <h3 className="text-xs font-bold text-[#8888a0] uppercase tracking-wider">Current Bid</h3>
+                  <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Current Bid</h3>
                   <div className={cn(
-                    "text-5xl font-black text-[#00d4aa] flex items-center gap-2 transition-all duration-300",
-                    bidFlash ? "scale-110 text-white" : "scale-100"
+                    "text-5xl font-black text-cyan-400 text-glow flex items-center gap-2 transition-all duration-300",
+                    bidFlash ? "scale-110 text-zinc-100" : "scale-100"
                   )}>
                     <IndianRupee className="w-10 h-10" />
                     {formatPrice(gameState.currentBid === 0 ? (gameState.currentPlayer?.basePrice || 0) : gameState.currentBid)}
                   </div>
-                  <p className="text-sm text-[#8888a0]">
-                    Highest Bidder: <span className="text-white font-bold">{gameState.highestBidder || "—"}</span>
+                  <p className="text-sm text-zinc-400">
+                    Highest Bidder: <span className="text-zinc-100 font-bold">{gameState.highestBidder || "—"}</span>
                   </p>
                 </div>
 
                 <div className="text-right space-y-2">
                   <div className="flex items-center gap-2 justify-end">
                     <Timer className={cn("w-5 h-5", gameState.timer <= 10 ? "text-red-500 animate-pulse" : "text-yellow-500")} />
-                    <span className={cn("text-3xl font-black font-mono", gameState.timer <= 10 ? "text-red-500" : "text-white")}>
+                    <span className={cn("text-3xl font-black font-mono", gameState.timer <= 10 ? "text-red-500" : "text-zinc-100")}>
                       {gameState.timer}s
                     </span>
                   </div>
-                  <div className="w-32 h-2 bg-[#0f0f14] rounded-full overflow-hidden">
+                  <div className="w-32 h-2 bg-black/20 rounded-full overflow-hidden">
                     <motion.div 
                       initial={{ width: "100%" }}
                       animate={{ width: `${(gameState.timer / 30) * 100}%` }}
-                      className={cn("h-full", gameState.timer <= 10 ? "bg-red-500" : "bg-[#00d4aa]")}
+                      className={cn("h-full", gameState.timer <= 10 ? "bg-red-500" : "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none")}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Bid Log */}
-              <div className="bg-[#0f0f14] rounded-xl p-4 h-32 overflow-y-auto border border-[#2a2a38] custom-scrollbar">
-                <h4 className="text-[10px] font-black text-[#8888a0] uppercase tracking-widest mb-2">Bid History</h4>
+              <div className="bg-black/20 rounded-xl p-4 h-32 overflow-y-auto border border-white/5 custom-scrollbar">
+                <h4 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">Bid History</h4>
                 <div className="space-y-2">
                   {gameState.currentBidLog.length > 0 ? (
                     gameState.currentBidLog.slice().reverse().map((bid, i) => (
                       <div key={i} className="flex justify-between items-center text-sm">
-                        <span className="font-bold text-white">{bid.team}</span>
-                        <span className="text-[#00d4aa] font-mono">{formatPrice(bid.price)}</span>
+                        <span className="font-bold text-zinc-100">{bid.team}</span>
+                        <span className="text-cyan-400 text-glow font-mono">{formatPrice(bid.price)}</span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs text-[#8888a0] italic">No bids yet</p>
+                    <p className="text-xs text-zinc-400 italic">No bids yet</p>
                   )}
                 </div>
               </div>
@@ -695,12 +703,12 @@ export default function App() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-[#8888a0] uppercase tracking-widest">Select Your Team</label>
+                    <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Select Your Team</label>
                     <select 
                       value={myTeam || ""}
                       onChange={(e) => handleSelectTeam(e.target.value)}
                       disabled={!!myTeam}
-                      className="w-full bg-[#0f0f14] border border-[#2a2a38] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00d4aa] disabled:opacity-50"
+                      className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 disabled:opacity-50"
                     >
                       <option value="">— Select Team —</option>
                       {Object.keys(gameState.teams || {}).map(team => {
@@ -719,7 +727,7 @@ export default function App() {
                     <button
                       onClick={handleBid}
                       disabled={!myTeam || !gameState.isStarted || gameState.timer === 0 || !canAfford}
-                      className="w-full h-[46px] bg-[#00d4aa] hover:bg-[#00a884] text-[#0f0f14] font-black rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+                      className="w-full h-[46px] bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none hover:bg-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.6)] text-zinc-950 font-black rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                     >
                       {!canAfford ? "Insufficient Purse" : "Place Bid"}
                     </button>
@@ -732,24 +740,24 @@ export default function App() {
 
           {/* Right Panel: Team Purses */}
           <div className="lg:col-span-3 space-y-6">
-            <section className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] h-full">
-              <h3 className="text-xs font-bold text-[#8888a0] uppercase tracking-wider mb-6 flex items-center gap-2">
+            <section className="glass-panel p-6 rounded-2xl border border-white/5 h-full">
+              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-6 flex items-center gap-2">
                 <Trophy className="w-4 h-4" />
                 Team Purses
               </h3>
               <div className="space-y-4">
                 {Object.entries(gameState.teams || {}).map(([name, data]: [string, any]) => (
-                  <div key={name} className="flex items-center justify-between p-2 rounded-lg hover:bg-[#0f0f14] transition-colors">
+                  <div key={name} className="flex items-center justify-between p-2 rounded-lg hover:bg-black/20 transition-colors">
                     <div className="flex items-center gap-3">
                       <img src={TEAM_LOGOS[name]} alt={name} className="w-6 h-6 object-contain" />
                       <div className="flex flex-col">
                         <span className="font-bold text-sm">{name}</span>
-                        <span className="text-[10px] text-[#8888a0]">
+                        <span className="text-[10px] text-zinc-400">
                           {data.players.length}/25 ({data.players.filter((p: any) => p.isOverseas).length} ✈️)
                         </span>
                       </div>
                     </div>
-                    <span className="text-[#00d4aa] font-mono text-sm font-bold">{formatPrice(data.purse)}</span>
+                    <span className="text-cyan-400 text-glow font-mono text-sm font-bold">{formatPrice(data.purse)}</span>
                   </div>
                 ))}
               </div>
@@ -758,35 +766,35 @@ export default function App() {
         </div>
 
         {/* Bottom Panel: Sold Players */}
-        <section className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38]">
-          <h3 className="text-xs font-bold text-[#8888a0] uppercase tracking-wider mb-6 flex items-center gap-2">
+        <section className="glass-panel p-6 rounded-2xl border border-white/5">
+          <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-6 flex items-center gap-2">
             <Users className="w-4 h-4" />
             Sold Players
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {gameState.soldPlayers.length > 0 ? (
               gameState.soldPlayers.slice().reverse().map((sold, i) => (
-                <div key={i} className="bg-[#0f0f14] p-4 rounded-xl border border-[#2a2a38] flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#1a1a24] border border-[#2a2a38] flex items-center justify-center overflow-hidden flex-shrink-0">
-                    <span className="text-[10px] font-bold text-[#8888a0]">
+                <div key={i} className="bg-black/20 p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full glass-panel border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0">
+                    <span className="text-[10px] font-bold text-zinc-400">
                       {sold.player.name.split(' ').map(n => n[0]).join('')}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-sm truncate">{sold.player.name}</p>
-                    <p className={cn("text-[10px] font-black uppercase", sold.team === 'Unsold' ? 'text-red-500' : 'text-[#8888a0]')}>
+                    <p className={cn("text-[10px] font-black uppercase", sold.team === 'Unsold' ? 'text-red-500' : 'text-zinc-400')}>
                       {sold.team}
                     </p>
                   </div>
                   {sold.team !== 'Unsold' && (
                     <div className="text-right">
-                      <p className="text-[#00d4aa] font-mono text-xs font-bold">{formatPrice(sold.price)}</p>
+                      <p className="text-cyan-400 text-glow font-mono text-xs font-bold">{formatPrice(sold.price)}</p>
                     </div>
                   )}
                 </div>
               ))
             ) : (
-              <p className="col-span-full text-center text-[#8888a0] italic text-sm py-4">No players sold yet</p>
+              <p className="col-span-full text-center text-zinc-400 italic text-sm py-4">No players sold yet</p>
             )}
           </div>
         </section>
@@ -818,13 +826,13 @@ export default function App() {
         }
 
         return (
-          <div className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] space-y-6">
+          <div className="glass-panel p-6 rounded-2xl border border-white/5 space-y-6">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-bold flex items-center gap-2">
-                <SkipForward className="w-6 h-6 text-[#00d4aa]" />
+                <SkipForward className="w-6 h-6 text-cyan-400 text-glow" />
                 Upcoming Players
               </h3>
-              <p className="text-sm text-[#8888a0]">
+              <p className="text-sm text-zinc-400">
                 {allUpcoming.length} players remaining
               </p>
             </div>
@@ -832,26 +840,26 @@ export default function App() {
             <div className="space-y-8">
               {sortedSets.map(set => (
                  <div key={set} className="space-y-4">
-                   <h4 className="text-lg font-black text-white border-b border-[#2a2a38] pb-2 flex items-center justify-between">
+                   <h4 className="text-lg font-black text-zinc-100 border-b border-white/5 pb-2 flex items-center justify-between">
                      <span>SET {set}</span>
-                     {set === gameState.currentSet && <span className="text-[10px] bg-[#00d4aa]/20 text-[#00d4aa] px-2 py-1 rounded-full uppercase tracking-widest">Active Set</span>}
+                     {set === gameState.currentSet && <span className="text-[10px] bg-[#00d4aa]/20 text-cyan-400 text-glow px-2 py-1 rounded-full uppercase tracking-widest">Active Set</span>}
                    </h4>
                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                      {groupedPlayers[set].map((player) => (
-                        <div key={player.id} className="bg-[#0f0f14] p-4 rounded-xl border border-[#2a2a38] flex items-center justify-between">
+                        <div key={player.id} className="bg-black/20 p-4 rounded-xl border border-white/5 flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-full bg-[#1a1a24] border border-[#2a2a38] flex items-center justify-center font-bold text-[#00d4aa]">
+                            <div className="w-10 h-10 rounded-full glass-panel border border-white/5 flex items-center justify-center font-bold text-cyan-400 text-glow">
                               {player.name.split(' ').map((n: string) => n[0]).join('')}
                             </div>
                             <div>
                               <p className="font-bold">{player.name}</p>
                               <div className="flex items-center gap-2 mt-1">
-                                <span className="text-[10px] text-[#8888a0] uppercase font-black tracking-widest">{player.role.replace('_', ' ')}</span>
+                                <span className="text-[10px] text-zinc-400 uppercase font-black tracking-widest">{player.role.replace('_', ' ')}</span>
                               </div>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs text-[#8888a0] uppercase font-bold">Base</p>
+                            <p className="text-xs text-zinc-400 uppercase font-bold">Base</p>
                             <p className="text-sm font-bold">{formatPrice(player.basePrice)}</p>
                           </div>
                         </div>
@@ -860,7 +868,7 @@ export default function App() {
                  </div>
               ))}
               {allUpcoming.length === 0 && (
-                <p className="text-center text-[#8888a0] py-8 italic">No more players in the pool.</p>
+                <p className="text-center text-zinc-400 py-8 italic">No more players in the pool.</p>
               )}
             </div>
           </div>
@@ -878,15 +886,15 @@ export default function App() {
                   className={cn(
                     "p-4 rounded-xl border transition-all flex flex-col items-center gap-2",
                     selectedSquadTeam === team 
-                      ? "bg-[#00d4aa] border-[#00d4aa] text-[#0f0f14]" 
-                      : "bg-[#1a1a24] border-[#2a2a38] text-white hover:border-[#00d4aa]"
+                      ? "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none border-cyan-500 text-zinc-950" 
+                      : "glass-panel border-white/5 text-zinc-100 hover:border-cyan-400"
                   )}
                 >
                   <img src={TEAM_LOGOS[team]} alt={team} className="w-12 h-12 object-contain" />
                   <span className="font-bold text-sm">{team}</span>
                   <span className={cn(
                     "text-[10px] font-black uppercase",
-                    selectedSquadTeam === team ? "text-[#0f0f14]/70" : "text-[#8888a0]"
+                    selectedSquadTeam === team ? "text-zinc-950/70" : "text-zinc-400"
                   )}>
                     {gameState.teams?.[team]?.players?.length || 0} Players
                   </span>
@@ -898,14 +906,14 @@ export default function App() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-[#1a1a24] p-6 rounded-2xl border border-[#2a2a38] space-y-6"
+                className="glass-panel p-6 rounded-2xl border border-white/5 space-y-6"
               >
-                <div className="flex items-center justify-between border-b border-[#2a2a38] pb-4">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
                   <div className="flex items-center gap-4">
                     <img src={TEAM_LOGOS[selectedSquadTeam]} alt={selectedSquadTeam} className="w-16 h-16 object-contain" />
                     <div>
                       <h3 className="text-2xl font-bold">{selectedSquadTeam} Squad</h3>
-                      <p className="text-[#8888a0]">Remaining Purse: <span className="text-[#00d4aa] font-bold">{formatPrice(gameState.teams?.[selectedSquadTeam]?.purse || 0)}</span></p>
+                      <p className="text-zinc-400">Remaining Purse: <span className="text-cyan-400 text-glow font-bold">{formatPrice(gameState.teams?.[selectedSquadTeam]?.purse || 0)}</span></p>
                     </div>
                   </div>
                 </div>
@@ -914,30 +922,31 @@ export default function App() {
                   {gameState.soldPlayers
                     .filter(p => p.team === selectedSquadTeam)
                     .map((sold, i) => (
-                      <div key={i} className="bg-[#0f0f14] p-4 rounded-xl border border-[#2a2a38] flex items-center justify-between">
+                      <div key={i} className="bg-black/20 p-4 rounded-xl border border-white/5 flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-[#1a1a24] border border-[#2a2a38] flex items-center justify-center font-bold text-[#00d4aa]">
+                          <div className="w-10 h-10 rounded-full glass-panel border border-white/5 flex items-center justify-center font-bold text-cyan-400 text-glow">
                             {sold.player.name.split(' ').map(n => n[0]).join('')}
                           </div>
                           <div>
                             <p className="font-bold">{sold.player.name}</p>
-                            <p className="text-[10px] text-[#8888a0] uppercase font-black tracking-widest">{sold.player.role.replace('_', ' ')}</p>
+                            <p className="text-[10px] text-zinc-400 uppercase font-black tracking-widest">{sold.player.role.replace('_', ' ')}</p>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs text-[#8888a0] uppercase font-bold">Bought For</p>
-                          <p className="text-sm font-bold text-[#00d4aa]">{formatPrice(sold.price)}</p>
+                          <p className="text-xs text-zinc-400 uppercase font-bold">Bought For</p>
+                          <p className="text-sm font-bold text-cyan-400 text-glow">{formatPrice(sold.price)}</p>
                         </div>
                       </div>
                     ))}
                   {gameState.soldPlayers.filter(p => p.team === selectedSquadTeam).length === 0 && (
-                    <p className="col-span-full text-center text-[#8888a0] py-8 italic">No players bought yet.</p>
+                    <p className="col-span-full text-center text-zinc-400 py-8 italic">No players bought yet.</p>
                   )}
                 </div>
               </motion.div>
             )}
           </div>
         )}
+      </div>
       </div>
     </div>
   );
