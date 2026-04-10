@@ -30,18 +30,3 @@ h1, h2, h3, h4, h5, h6 {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
-
-/* Glass panel utility */
-.glass-panel {
-  background-color: rgba(24, 24, 27, 0.4); /* zinc-900/40 */
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  border-radius: 1rem;
-}
-
-/* Glowing text utility */
-.text-glow {
-  text-shadow: 0 0 20px rgba(0, 212, 170, 0.5);
-}

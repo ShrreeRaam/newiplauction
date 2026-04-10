@@ -19,17 +19,17 @@ const TEAM_LOGOS: Record<string, string> = {
 };
 
 const TEAM_COLORS: Record<string, { bg: string; text: string; border: string; shadow: string }> = {
-  CSK: { bg: "bg-[#FFFF00]", text: "text-[#004BA0]", border: "border-[#F25C19]", shadow: "shadow-[0_0_50px_rgba(255,255,0,0.5)]" },
-  MI: { bg: "bg-[#004BA0]", text: "text-[#D4AF37]", border: "border-[#D4AF37]", shadow: "shadow-[0_0_50px_rgba(0,75,160,0.5)]" },
-  KKR: { bg: "bg-[#3A225D]", text: "text-[#D4AF37]", border: "border-[#D4AF37]", shadow: "shadow-[0_0_50px_rgba(58,34,93,0.5)]" },
-  RCB: { bg: "bg-[#EC1C24]", text: "text-[#000000]", border: "border-[#000000]", shadow: "shadow-[0_0_50px_rgba(236,28,36,0.5)]" },
-  RR: { bg: "bg-[#EA1B85]", text: "text-[#004BA0]", border: "border-[#004BA0]", shadow: "shadow-[0_0_50px_rgba(234,27,133,0.5)]" },
-  SRH: { bg: "bg-[#FF822A]", text: "text-[#000000]", border: "border-[#000000]", shadow: "shadow-[0_0_50px_rgba(255,130,42,0.5)]" },
-  DC: { bg: "bg-[#004BA0]", text: "text-[#EF4123]", border: "border-[#EF4123]", shadow: "shadow-[0_0_50px_rgba(0,75,160,0.5)]" },
-  PBKS: { bg: "bg-[#D71920]", text: "text-[#D1D3D4]", border: "border-[#D1D3D4]", shadow: "shadow-[0_0_50px_rgba(215,25,32,0.5)]" },
-  GT: { bg: "bg-[#1B2133]", text: "text-[#CBA92B]", border: "border-[#CBA92B]", shadow: "shadow-[0_0_50px_rgba(27,33,51,0.5)]" },
-  LSG: { bg: "bg-[#E0202D]", text: "text-[#0057A3]", border: "border-[#0057A3]", shadow: "shadow-[0_0_50px_rgba(224,32,45,0.5)]" },
-  Unsold: { bg: "bg-gray-800", text: "text-zinc-100", border: "border-white", shadow: "shadow-[0_0_50px_rgba(255,255,255,0.2)]" }
+  CSK: { bg: "bg-[#FFFF00]", text: "text-[#004BA0]", border: "border-[#F25C19]", shadow: "shadow-xl shadow-black/80" },
+  MI: { bg: "bg-[#004BA0]", text: "text-[#D4AF37]", border: "border-[#D4AF37]", shadow: "shadow-xl shadow-black/80" },
+  KKR: { bg: "bg-[#3A225D]", text: "text-[#D4AF37]", border: "border-[#D4AF37]", shadow: "shadow-xl shadow-black/80" },
+  RCB: { bg: "bg-[#EC1C24]", text: "text-[#000000]", border: "border-[#000000]", shadow: "shadow-xl shadow-black/80" },
+  RR: { bg: "bg-[#EA1B85]", text: "text-[#004BA0]", border: "border-[#004BA0]", shadow: "shadow-xl shadow-black/80" },
+  SRH: { bg: "bg-[#FF822A]", text: "text-[#000000]", border: "border-[#000000]", shadow: "shadow-xl shadow-black/80" },
+  DC: { bg: "bg-[#004BA0]", text: "text-[#EF4123]", border: "border-[#EF4123]", shadow: "shadow-xl shadow-black/80" },
+  PBKS: { bg: "bg-[#D71920]", text: "text-[#D1D3D4]", border: "border-[#D1D3D4]", shadow: "shadow-xl shadow-black/80" },
+  GT: { bg: "bg-[#1B2133]", text: "text-[#CBA92B]", border: "border-[#CBA92B]", shadow: "shadow-xl shadow-black/80" },
+  LSG: { bg: "bg-[#E0202D]", text: "text-[#0057A3]", border: "border-[#0057A3]", shadow: "shadow-xl shadow-black/80" },
+  Unsold: { bg: "bg-gray-800", text: "text-zinc-100", border: "border-white", shadow: "shadow-xl shadow-black/80" }
 };
 
 export default function App() {
@@ -255,12 +255,12 @@ export default function App() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full space-y-8 glass-panel p-8 relative z-10"
+          className="max-w-md w-full space-y-8 bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-8 relative z-10"
         >
           <div className="text-center space-y-2">
             <div className="flex justify-center">
-              <div className="p-4 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] rounded-full">
-                <Gavel className="w-12 h-12 text-cyan-400 text-glow" />
+              <div className="p-4 bg-zinc-800/50 border border-zinc-700/50 text-zinc-100 rounded-full">
+                <Gavel className="w-12 h-12 text-zinc-100 font-semibold " />
               </div>
             </div>
             <h1 className="text-3xl font-bold tracking-tight">IPL Auction</h1>
@@ -275,7 +275,7 @@ export default function App() {
                 placeholder="Enter Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full bg-zinc-950 border border-zinc-800/50 border border-white/5 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-zinc-700 transition-colors"
               />
             </div>
 
@@ -286,8 +286,8 @@ export default function App() {
                   className={cn(
                     "p-4 rounded-xl border-2 transition-all text-center space-y-1",
                     selectedMode === '2025' 
-                      ? "border-cyan-500 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] text-cyan-400 text-glow" 
-                      : "border-white/5 bg-black/20 text-zinc-400 hover:border-cyan-500/30"
+                      ? "border-zinc-700 bg-zinc-800/50 border border-zinc-700/50 text-zinc-100 text-zinc-100 font-semibold " 
+                      : "border-white/5 bg-zinc-950 border border-zinc-800/50 text-zinc-400 hover:border-zinc-700"
                   )}
                 >
                   <div className="font-bold text-sm">IPL 2025</div>
@@ -298,8 +298,8 @@ export default function App() {
                   className={cn(
                     "p-4 rounded-xl border-2 transition-all text-center space-y-1",
                     selectedMode === 'legends' 
-                      ? "border-cyan-500 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] text-cyan-400 text-glow" 
-                      : "border-white/5 bg-black/20 text-zinc-400 hover:border-cyan-500/30"
+                      ? "border-zinc-700 bg-zinc-800/50 border border-zinc-700/50 text-zinc-100 text-zinc-100 font-semibold " 
+                      : "border-white/5 bg-zinc-950 border border-zinc-800/50 text-zinc-400 hover:border-zinc-700"
                   )}
                 >
                   <div className="font-bold text-sm">LEGENDS</div>
@@ -309,7 +309,7 @@ export default function App() {
 
               <button
                 onClick={handleCreateRoom}
-                className="w-full py-4 bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none hover:bg-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.6)] text-zinc-950 font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors hover:bg-cyan-400 shadow-md text-zinc-950 font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
               >
                 <Play className="w-5 h-5" />
                 Create New Room
@@ -321,7 +321,7 @@ export default function App() {
                 <div className="w-full border-t border-white/5"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="glass-panel px-2 text-zinc-400 font-bold">OR</span>
+                <span className="bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl px-2 text-zinc-400 font-bold">OR</span>
               </div>
             </div>
 
@@ -333,7 +333,7 @@ export default function App() {
                   maxLength={4}
                   value={joinId}
                   onChange={(e) => setJoinId(e.target.value)}
-                  className="flex-1 bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-center text-xl tracking-[0.5em] focus:outline-none focus:border-cyan-500 transition-colors"
+                  className="flex-1 bg-zinc-950 border border-zinc-800/50 border border-white/5 rounded-xl px-4 py-3 text-center text-xl tracking-[0.5em] focus:outline-none focus:border-zinc-700 transition-colors"
                 />
                 <button
                   onClick={handleJoinRoom}
@@ -353,7 +353,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-6 lg:p-8 relative overflow-hidden">
       {/* Ambient glows */}
-      <div className="absolute top-[0%] left-[10%] w-[800px] h-[800px] rounded-full bg-cyan-500/5 blur-[150px] pointer-events-none z-0"></div>
+      <div className="absolute top-[0%] left-[10%] w-[800px] h-[800px] rounded-full bg-zinc-100/5 blur-[150px] pointer-events-none z-0"></div>
       <div className="absolute bottom-[-10%] right-[0%] w-[600px] h-[600px] rounded-full bg-indigo-500/5 blur-[150px] pointer-events-none z-0"></div>
       <div className="relative z-10">
       {/* Notification Banner */}
@@ -363,19 +363,19 @@ export default function App() {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950 px-6 py-3 rounded-full font-bold shadow-[0_0_30px_rgba(0,212,170,0.4)] flex items-center gap-3 border-2 border-cyan-500/30"
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors text-zinc-950 px-6 py-3 rounded-full font-bold shadow-[0_0_30px_rgba(0,212,170,0.4)] flex items-center gap-3 border-2 border-zinc-700"
           >
-            <div className="w-2 h-2 bg-black/20 rounded-full animate-pulse" />
+            <div className="w-2 h-2 bg-zinc-950 border border-zinc-800/50 rounded-full animate-pulse" />
             {notification}
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Header with Mode and Room ID */}
-      <div className="max-w-7xl mx-auto mb-6 flex flex-col md:flex-row justify-between items-center gap-4 glass-panel p-4 rounded-2xl border border-white/5">
+      <div className="max-w-7xl mx-auto mb-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-4 rounded-2xl border border-white/5">
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] rounded-xl">
-            <Trophy className="w-6 h-6 text-cyan-400 text-glow" />
+          <div className="p-3 bg-zinc-800/50 border border-zinc-700/50 text-zinc-100 rounded-xl">
+            <Trophy className="w-6 h-6 text-zinc-100 font-semibold " />
           </div>
           <div>
             <h2 className="text-xl font-bold tracking-tight">
@@ -388,9 +388,9 @@ export default function App() {
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="px-4 py-2 bg-black/20 rounded-lg border border-white/5 flex items-center gap-2">
+          <div className="px-4 py-2 bg-zinc-950 border border-zinc-800/50 rounded-lg border border-white/5 flex items-center gap-2">
             <span className="text-xs text-zinc-400 font-bold uppercase">Room ID:</span>
-            <span className="text-lg font-mono font-bold text-cyan-400 text-glow">{roomId}</span>
+            <span className="text-lg font-mono font-bold text-zinc-100 font-semibold ">{roomId}</span>
             <button 
               onClick={() => {
                 navigator.clipboard.writeText(roomId);
@@ -415,10 +415,10 @@ export default function App() {
           >
             <div className={cn(
               "px-12 py-8 rounded-2xl text-center transform -rotate-3 border-4",
-              TEAM_COLORS[lastSoldPlayer.team]?.bg || "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none",
+              TEAM_COLORS[lastSoldPlayer.team]?.bg || "bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors",
               TEAM_COLORS[lastSoldPlayer.team]?.text || "text-zinc-950",
               TEAM_COLORS[lastSoldPlayer.team]?.border || "border-white",
-              TEAM_COLORS[lastSoldPlayer.team]?.shadow || "shadow-[0_0_50px_rgba(0,212,170,0.5)]"
+              TEAM_COLORS[lastSoldPlayer.team]?.shadow || "shadow-xl shadow-black/80"
             )}>
               <h2 className="text-6xl font-black uppercase mb-2 italic tracking-tighter">
                 {lastSoldPlayer.team === 'Unsold' ? 'UNSOLD' : 'SOLD!'}
@@ -449,21 +449,21 @@ export default function App() {
 
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-center gap-4 glass-panel p-4 rounded-2xl border border-white/5">
+        <header className="flex flex-col md:flex-row justify-between items-center gap-4 bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-4 rounded-2xl border border-white/5">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] rounded-lg">
-              <Gavel className="w-6 h-6 text-cyan-400 text-glow" />
+            <div className="p-2 bg-zinc-800/50 border border-zinc-700/50 text-zinc-100 rounded-lg">
+              <Gavel className="w-6 h-6 text-zinc-100 font-semibold " />
             </div>
             <div className="flex flex-col">
               <h1 className="text-xl font-bold">IPL Auction Simulator</h1>
-              {gameState.currentSet && <span className="text-[10px] text-cyan-400 text-glow font-black uppercase tracking-widest mt-0.5">Currently: Set {gameState.currentSet}</span>}
+              {gameState.currentSet && <span className="text-[10px] text-zinc-100 font-semibold  font-black uppercase tracking-widest mt-0.5">Currently: Set {gameState.currentSet}</span>}
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center bg-black/20 px-3 py-1.5 rounded-lg border border-white/5 gap-2">
+            <div className="flex items-center bg-zinc-950 border border-zinc-800/50 px-3 py-1.5 rounded-lg border border-white/5 gap-2">
               <span className="text-xs text-zinc-400 font-bold uppercase">Room ID</span>
-              <span className="font-mono font-bold text-cyan-400 text-glow">{roomId}</span>
+              <span className="font-mono font-bold text-zinc-100 font-semibold ">{roomId}</span>
               <button 
                 onClick={() => navigator.clipboard.writeText(roomId)}
                 className="p-1 hover:bg-white/5 rounded transition-colors"
@@ -476,22 +476,22 @@ export default function App() {
               <div className="flex flex-col items-end gap-2">
                 <div className="flex gap-2">
                   {gameState.players.length === 0 ? (
-                    <div className="flex bg-black/20 border border-white/5 rounded-lg p-1">
+                    <div className="flex bg-zinc-950 border border-zinc-800/50 border border-white/5 rounded-lg p-1">
                       <select 
                         onChange={(e) => { 
                           if(e.target.value) {
                             socket.emit('admin:selectSet', { roomId, setId: e.target.value });
                           }
                         }}
-                        className="bg-transparent text-cyan-400 text-glow text-sm font-bold focus:outline-none px-2"
+                        className="bg-transparent text-zinc-100 font-semibold  text-sm font-bold focus:outline-none px-2"
                         value=""
                       >
                         <option value="" disabled className="text-zinc-400">Select Next Set</option>
-                        {gameState.availableSets?.map((s: string) => <option key={s} value={s} className="text-zinc-100 bg-black/20">{s}</option>)}
+                        {gameState.availableSets?.map((s: string) => <option key={s} value={s} className="text-zinc-100 bg-zinc-950 border border-zinc-800/50">{s}</option>)}
                       </select>
                     </div>
                   ) : !gameState.isStarted ? (
-                    <button onClick={handleStart} className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950 font-bold rounded-lg text-sm hover:bg-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.6)]">
+                    <button onClick={handleStart} className="px-4 py-1.5 bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors text-zinc-950 font-bold rounded-lg text-sm hover:bg-cyan-400 shadow-md">
                       Start Set {gameState.currentSet}
                     </button>
                   ) : (
@@ -513,7 +513,7 @@ export default function App() {
                 {gameState.isStarted && (
                   <p className={cn(
                     "text-[10px] font-black uppercase tracking-widest",
-                    gameState.isPaused ? "text-yellow-500" : "text-cyan-400 text-glow"
+                    gameState.isPaused ? "text-yellow-500" : "text-zinc-100 font-semibold "
                   )}>
                     {gameState.isPaused ? "Auction Paused" : `Set ${gameState.currentSet} in Progress`}
                   </p>
@@ -524,12 +524,12 @@ export default function App() {
         </header>
 
         {/* Navigation Tabs */}
-        <nav className="flex gap-2 glass-panel p-1 rounded-xl border border-white/5">
+        <nav className="flex gap-2 bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-1 rounded-xl border border-white/5">
           <button
             onClick={() => setView('auction')}
             className={cn(
               "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all",
-              view === 'auction' ? "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+              view === 'auction' ? "bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
             )}
           >
             <LayoutDashboard className="w-4 h-4" />
@@ -539,7 +539,7 @@ export default function App() {
             onClick={() => setView('upcoming')}
             className={cn(
               "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all",
-              view === 'upcoming' ? "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+              view === 'upcoming' ? "bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
             )}
           >
             <SkipForward className="w-4 h-4" />
@@ -549,7 +549,7 @@ export default function App() {
             onClick={() => setView('squads')}
             className={cn(
               "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all",
-              view === 'squads' ? "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+              view === 'squads' ? "bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors text-zinc-950" : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
             )}
           >
             <Users className="w-4 h-4" />
@@ -562,7 +562,7 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Panel: Current Player & Owners */}
           <div className="lg:col-span-3 space-y-6">
-            <section className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center relative overflow-hidden">
+            <section className="bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center relative overflow-hidden">
               <h3 className="w-full text-left text-xs font-bold text-zinc-400 uppercase tracking-wider mb-6">Current Player</h3>
               
               <AnimatePresence mode="wait">
@@ -575,11 +575,11 @@ export default function App() {
                     className="space-y-4 w-full"
                   >
                     <div className="relative mx-auto">
-                      <div className="w-32 h-32 bg-black/20 rounded-full border-2 border-white/5 flex items-center justify-center text-4xl font-bold text-cyan-400 text-glow overflow-hidden">
+                      <div className="w-32 h-32 bg-zinc-950 border border-zinc-800/50 rounded-full border-2 border-white/5 flex items-center justify-center text-4xl font-bold text-zinc-100 font-semibold  overflow-hidden">
                         {gameState.currentPlayer.name.split(' ').map(n => n[0]).join('')}
                       </div>
                       {gameState.timer === 0 && (
-                        <div className="absolute top-0 right-0 bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none text-zinc-950 text-[10px] font-black px-2 py-1 rounded-full uppercase">
+                        <div className="absolute top-0 right-0 bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors text-zinc-950 text-[10px] font-black px-2 py-1 rounded-full uppercase">
                           Sold
                         </div>
                       )}
@@ -622,7 +622,7 @@ export default function App() {
             </section>
 
             {/* Team Owners */}
-            <section className="glass-panel p-6 rounded-2xl border border-white/5">
+            <section className="bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-6 rounded-2xl border border-white/5">
               <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 Team Owners
@@ -630,12 +630,12 @@ export default function App() {
               <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
                 {Object.entries(gameState.teamOwners || {}).length > 0 ? (
                   Object.entries(gameState.teamOwners || {}).map(([team, ownerId]) => (
-                    <div key={team} className="flex items-center justify-between p-3 bg-black/20 rounded-xl border border-white/5">
+                    <div key={team} className="flex items-center justify-between p-3 bg-zinc-950 border border-zinc-800/50 rounded-xl border border-white/5">
                       <div className="flex items-center gap-3">
                         <img src={TEAM_LOGOS[team]} alt={team} className="w-6 h-6 object-contain" />
                         <span className="font-bold text-sm">{team}</span>
                       </div>
-                      <span className="text-xs font-bold text-cyan-400 text-glow truncate max-w-[120px] text-right">
+                      <span className="text-xs font-bold text-zinc-100 font-semibold  truncate max-w-[120px] text-right">
                         {gameState.usernames?.[ownerId as string] || "Unknown"}
                       </span>
                     </div>
@@ -649,12 +649,12 @@ export default function App() {
 
           {/* Center Panel: Bidding & Timer */}
           <div className="lg:col-span-6 space-y-6">
-            <section className="glass-panel p-6 rounded-2xl border border-white/5 space-y-6">
+            <section className="bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-6 rounded-2xl border border-white/5 space-y-6">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Current Bid</h3>
                   <div className={cn(
-                    "text-5xl font-black text-cyan-400 text-glow flex items-center gap-2 transition-all duration-300",
+                    "text-5xl font-black text-zinc-100 font-semibold  flex items-center gap-2 transition-all duration-300",
                     bidFlash ? "scale-110 text-zinc-100" : "scale-100"
                   )}>
                     <IndianRupee className="w-10 h-10" />
@@ -672,25 +672,25 @@ export default function App() {
                       {gameState.timer}s
                     </span>
                   </div>
-                  <div className="w-32 h-2 bg-black/20 rounded-full overflow-hidden">
+                  <div className="w-32 h-2 bg-zinc-950 border border-zinc-800/50 rounded-full overflow-hidden">
                     <motion.div 
                       initial={{ width: "100%" }}
                       animate={{ width: `${(gameState.timer / 30) * 100}%` }}
-                      className={cn("h-full", gameState.timer <= 10 ? "bg-red-500" : "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none")}
+                      className={cn("h-full", gameState.timer <= 10 ? "bg-red-500" : "bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors")}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Bid Log */}
-              <div className="bg-black/20 rounded-xl p-4 h-32 overflow-y-auto border border-white/5 custom-scrollbar">
+              <div className="bg-zinc-950 border border-zinc-800/50 rounded-xl p-4 h-32 overflow-y-auto border border-white/5 custom-scrollbar">
                 <h4 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">Bid History</h4>
                 <div className="space-y-2">
                   {gameState.currentBidLog.length > 0 ? (
                     gameState.currentBidLog.slice().reverse().map((bid, i) => (
                       <div key={i} className="flex justify-between items-center text-sm">
                         <span className="font-bold text-zinc-100">{bid.team}</span>
-                        <span className="text-cyan-400 text-glow font-mono">{formatPrice(bid.price)}</span>
+                        <span className="text-zinc-100 font-semibold  font-mono">{formatPrice(bid.price)}</span>
                       </div>
                     ))
                   ) : (
@@ -708,7 +708,7 @@ export default function App() {
                       value={myTeam || ""}
                       onChange={(e) => handleSelectTeam(e.target.value)}
                       disabled={!!myTeam}
-                      className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 disabled:opacity-50"
+                      className="w-full bg-zinc-950 border border-zinc-800/50 border border-white/5 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-zinc-700 disabled:opacity-50"
                     >
                       <option value="">— Select Team —</option>
                       {Object.keys(gameState.teams || {}).map(team => {
@@ -727,7 +727,7 @@ export default function App() {
                     <button
                       onClick={handleBid}
                       disabled={!myTeam || !gameState.isStarted || gameState.timer === 0 || !canAfford}
-                      className="w-full h-[46px] bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none hover:bg-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.6)] text-zinc-950 font-black rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
+                      className="w-full h-[46px] bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors hover:bg-cyan-400 shadow-md text-zinc-950 font-black rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                     >
                       {!canAfford ? "Insufficient Purse" : "Place Bid"}
                     </button>
@@ -740,14 +740,14 @@ export default function App() {
 
           {/* Right Panel: Team Purses */}
           <div className="lg:col-span-3 space-y-6">
-            <section className="glass-panel p-6 rounded-2xl border border-white/5 h-full">
+            <section className="bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-6 rounded-2xl border border-white/5 h-full">
               <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-6 flex items-center gap-2">
                 <Trophy className="w-4 h-4" />
                 Team Purses
               </h3>
               <div className="space-y-4">
                 {Object.entries(gameState.teams || {}).map(([name, data]: [string, any]) => (
-                  <div key={name} className="flex items-center justify-between p-2 rounded-lg hover:bg-black/20 transition-colors">
+                  <div key={name} className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-950 border border-zinc-800/50 transition-colors">
                     <div className="flex items-center gap-3">
                       <img src={TEAM_LOGOS[name]} alt={name} className="w-6 h-6 object-contain" />
                       <div className="flex flex-col">
@@ -757,7 +757,7 @@ export default function App() {
                         </span>
                       </div>
                     </div>
-                    <span className="text-cyan-400 text-glow font-mono text-sm font-bold">{formatPrice(data.purse)}</span>
+                    <span className="text-zinc-100 font-semibold  font-mono text-sm font-bold">{formatPrice(data.purse)}</span>
                   </div>
                 ))}
               </div>
@@ -766,7 +766,7 @@ export default function App() {
         </div>
 
         {/* Bottom Panel: Sold Players */}
-        <section className="glass-panel p-6 rounded-2xl border border-white/5">
+        <section className="bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-6 rounded-2xl border border-white/5">
           <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-6 flex items-center gap-2">
             <Users className="w-4 h-4" />
             Sold Players
@@ -774,8 +774,8 @@ export default function App() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {gameState.soldPlayers.length > 0 ? (
               gameState.soldPlayers.slice().reverse().map((sold, i) => (
-                <div key={i} className="bg-black/20 p-4 rounded-xl border border-white/5 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full glass-panel border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div key={i} className="bg-zinc-950 border border-zinc-800/50 p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0">
                     <span className="text-[10px] font-bold text-zinc-400">
                       {sold.player.name.split(' ').map(n => n[0]).join('')}
                     </span>
@@ -788,7 +788,7 @@ export default function App() {
                   </div>
                   {sold.team !== 'Unsold' && (
                     <div className="text-right">
-                      <p className="text-cyan-400 text-glow font-mono text-xs font-bold">{formatPrice(sold.price)}</p>
+                      <p className="text-zinc-100 font-semibold  font-mono text-xs font-bold">{formatPrice(sold.price)}</p>
                     </div>
                   )}
                 </div>
@@ -826,10 +826,10 @@ export default function App() {
         }
 
         return (
-          <div className="glass-panel p-6 rounded-2xl border border-white/5 space-y-6">
+          <div className="bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-6 rounded-2xl border border-white/5 space-y-6">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-bold flex items-center gap-2">
-                <SkipForward className="w-6 h-6 text-cyan-400 text-glow" />
+                <SkipForward className="w-6 h-6 text-zinc-100 font-semibold " />
                 Upcoming Players
               </h3>
               <p className="text-sm text-zinc-400">
@@ -842,13 +842,13 @@ export default function App() {
                  <div key={set} className="space-y-4">
                    <h4 className="text-lg font-black text-zinc-100 border-b border-white/5 pb-2 flex items-center justify-between">
                      <span>SET {set}</span>
-                     {set === gameState.currentSet && <span className="text-[10px] bg-[#00d4aa]/20 text-cyan-400 text-glow px-2 py-1 rounded-full uppercase tracking-widest">Active Set</span>}
+                     {set === gameState.currentSet && <span className="text-[10px] bg-[#00d4aa]/20 text-zinc-100 font-semibold  px-2 py-1 rounded-full uppercase tracking-widest">Active Set</span>}
                    </h4>
                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                      {groupedPlayers[set].map((player) => (
-                        <div key={player.id} className="bg-black/20 p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                        <div key={player.id} className="bg-zinc-950 border border-zinc-800/50 p-4 rounded-xl border border-white/5 flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-full glass-panel border border-white/5 flex items-center justify-center font-bold text-cyan-400 text-glow">
+                            <div className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl border border-white/5 flex items-center justify-center font-bold text-zinc-100 font-semibold ">
                               {player.name.split(' ').map((n: string) => n[0]).join('')}
                             </div>
                             <div>
@@ -886,8 +886,8 @@ export default function App() {
                   className={cn(
                     "p-4 rounded-xl border transition-all flex flex-col items-center gap-2",
                     selectedSquadTeam === team 
-                      ? "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-black border-none border-cyan-500 text-zinc-950" 
-                      : "glass-panel border-white/5 text-zinc-100 hover:border-cyan-400"
+                      ? "bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm border border-zinc-200 transition-colors border-zinc-700 text-zinc-950" 
+                      : "bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl border-white/5 text-zinc-100 hover:border-zinc-400"
                   )}
                 >
                   <img src={TEAM_LOGOS[team]} alt={team} className="w-12 h-12 object-contain" />
@@ -906,14 +906,14 @@ export default function App() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="glass-panel p-6 rounded-2xl border border-white/5 space-y-6"
+                className="bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl p-6 rounded-2xl border border-white/5 space-y-6"
               >
                 <div className="flex items-center justify-between border-b border-white/5 pb-4">
                   <div className="flex items-center gap-4">
                     <img src={TEAM_LOGOS[selectedSquadTeam]} alt={selectedSquadTeam} className="w-16 h-16 object-contain" />
                     <div>
                       <h3 className="text-2xl font-bold">{selectedSquadTeam} Squad</h3>
-                      <p className="text-zinc-400">Remaining Purse: <span className="text-cyan-400 text-glow font-bold">{formatPrice(gameState.teams?.[selectedSquadTeam]?.purse || 0)}</span></p>
+                      <p className="text-zinc-400">Remaining Purse: <span className="text-zinc-100 font-semibold  font-bold">{formatPrice(gameState.teams?.[selectedSquadTeam]?.purse || 0)}</span></p>
                     </div>
                   </div>
                 </div>
@@ -922,9 +922,9 @@ export default function App() {
                   {gameState.soldPlayers
                     .filter(p => p.team === selectedSquadTeam)
                     .map((sold, i) => (
-                      <div key={i} className="bg-black/20 p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                      <div key={i} className="bg-zinc-950 border border-zinc-800/50 p-4 rounded-xl border border-white/5 flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full glass-panel border border-white/5 flex items-center justify-center font-bold text-cyan-400 text-glow">
+                          <div className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 shadow-sm rounded-2xl border border-white/5 flex items-center justify-center font-bold text-zinc-100 font-semibold ">
                             {sold.player.name.split(' ').map(n => n[0]).join('')}
                           </div>
                           <div>
@@ -934,7 +934,7 @@ export default function App() {
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-zinc-400 uppercase font-bold">Bought For</p>
-                          <p className="text-sm font-bold text-cyan-400 text-glow">{formatPrice(sold.price)}</p>
+                          <p className="text-sm font-bold text-zinc-100 font-semibold ">{formatPrice(sold.price)}</p>
                         </div>
                       </div>
                     ))}
