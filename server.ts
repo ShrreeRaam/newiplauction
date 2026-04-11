@@ -1,3 +1,5 @@
+import "dotenv/config";
+import { createClient } from "@supabase/supabase-js";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -31,13 +33,29 @@ interface AuctionState {
   soldPlayers: { player: Player; team: string; price: number }[];
   teams: Record<string, TeamData>;
   teamOwners: Record<string, string>; // teamName -> socketId
+  teamUserIds: Record<string, string>; // teamName -> userId
+  teamUserIds: Record<string, string>; // teamName -> userId
   currentBidLog: { team: string; price: number }[];
   members: Set<string>;
   mode: '2025' | 'legends';
   usernames: Record<string, string>; // socketId -> username
 }
 
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "";
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
+const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+
 const rooms: Record<string, AuctionState> = {};
+
+async function syncRoomState(roomId: string) {
+  if (!supabase) return;
+  const room = rooms[roomId];
+  if (!room) return;
+  const stateToSave = { ...room, members: Array.from(room.members) };
+  try {
+    await supabase.from("auctions").upsert({ room_id: roomId, state: stateToSave, updated_at: new Date().toISOString() });
+  } catch (err) { console.error("Sync error", err); }
+}
 const TEAM_PURSE = 1200000000; // 120 Crore
 const TIMER_SECONDS = 30;
 
@@ -62,7 +80,7 @@ async function startServer() {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
-    socket.on("createRoom", ({ mode, username }: { mode: '2025' | 'legends', username: string }) => {
+    socket.on("createRoom", ({ mode, username, userId }: { mode: '2025' | 'legends', username: string, userId?: string }) => {
       const roomId = Math.floor(1000 + Math.random() * 9000).toString();
       const allPlayers = mode === 'legends' ? [...IPL_LEGENDS_PLAYERS] : [...IPL_2025_PLAYERS];
       const availableSets = Array.from(new Set(allPlayers.map((p) => p.set))).sort();
@@ -95,6 +113,7 @@ async function startServer() {
           PBKS: { purse: TEAM_PURSE, players: [] },
         },
         teamOwners: {},
+        teamUserIds: {},
         currentBidLog: [],
         members: new Set([socket.id]),
         mode,
@@ -113,10 +132,21 @@ async function startServer() {
         totalPlayers: 0,
       });
       io.to(roomId).emit("teamUpdate", { teamOwners: r.teamOwners, usernames: r.usernames });
+      syncRoomState(roomId);
     });
 
-    socket.on("joinRoom", ({ roomId, username }) => {
-      const room = rooms[roomId];
+    socket.on("joinRoom", async ({ roomId, username, userId }) => {
+      let room = rooms[roomId];
+      if (!room && supabase) {
+        try {
+          const { data } = await supabase.from("auctions").select("state").eq("room_id", roomId).single();
+          if (data?.state) {
+            rooms[roomId] = data.state;
+            rooms[roomId].members = new Set(rooms[roomId].members || []);
+            room = rooms[roomId];
+          }
+        } catch (e) {}
+      }
       if (!room) {
         socket.emit("error", "Room not found");
         return;
@@ -127,6 +157,24 @@ async function startServer() {
       
       if (!room.adminId) {
         room.adminId = socket.id;
+      }
+
+      // Restore ownership if userId matches
+      if (userId) {
+        Object.keys(room.teamUserIds).forEach(team => {
+          if (room.teamUserIds[team] === userId) {
+            room.teamOwners[team] = socket.id;
+          }
+        });
+      }
+
+      // Restore ownership if userId matches
+      if (userId) {
+        Object.keys(room.teamUserIds).forEach(team => {
+          if (room.teamUserIds[team] === userId) {
+            room.teamOwners[team] = socket.id;
+          }
+        });
       }
 
       socket.emit("joinAuction", {
@@ -167,25 +215,43 @@ async function startServer() {
         isStarted: false,
         currentPlayer: null,
       });
+      syncRoomState(roomId);
     });
 
-    socket.on("selectTeam", ({ team, roomId }) => {
+    socket.on("selectTeam", ({ team, roomId, userId }) => {
       const room = rooms[roomId];
       if (!room) return;
 
       if (room.teamOwners[team] && room.teamOwners[team] !== socket.id) {
-        socket.emit("bidError", { message: "Team already taken" });
-        return;
+        // If the team is owned by someone else by socket ID, check if it's the same user (reconnecting)
+        if (!userId || room.teamUserIds[team] !== userId) {
+          socket.emit("bidError", { message: "Team already taken" });
+          return;
+        }
       }
 
+      // Remove this user/socket from other teams
       Object.keys(room.teamOwners).forEach((t) => {
-        if (room.teamOwners[t] === socket.id) delete room.teamOwners[t];
+        if (room.teamOwners[t] === socket.id) {
+            delete room.teamOwners[t];
+            delete room.teamUserIds[t];
+        }
       });
+      if (userId) {
+        Object.keys(room.teamUserIds).forEach((t) => {
+            if (room.teamUserIds[t] === userId) {
+                delete room.teamOwners[t];
+                delete room.teamUserIds[t];
+            }
+        });
+      }
 
       room.teamOwners[team] = socket.id;
+      if (userId) room.teamUserIds[team] = userId;
       const username = room.usernames[socket.id];
       io.to(roomId).emit("teamUpdate", { teamOwners: room.teamOwners, usernames: room.usernames });
       io.to(roomId).emit("notification", { message: `${username} selected ${team}` });
+      syncRoomState(roomId);
     });
 
     socket.on("admin:startAuction", ({ roomId }) => {
@@ -214,9 +280,10 @@ async function startServer() {
       if (!room || room.adminId !== socket.id) return;
       room.isPaused = !room.isPaused;
       io.to(roomId).emit("auctionPaused", { isPaused: room.isPaused });
+      syncRoomState(roomId);
     });
 
-    socket.on("bid", ({ roomId }) => {
+    socket.on("bid", ({ roomId, userId }) => {
       const room = rooms[roomId];
       if (!room || !room.isStarted || room.isPaused) return;
 
@@ -268,6 +335,7 @@ async function startServer() {
         isStarted: room.isStarted,
         isPaused: room.isPaused,
       });
+      syncRoomState(roomId);
     });
 
     socket.on("disconnect", () => {
@@ -324,6 +392,7 @@ async function startServer() {
       isStarted: room.isStarted,
       isPaused: room.isPaused,
     });
+    syncRoomState(roomId);
   }
 
   function sellPlayer(roomId: string) {
@@ -354,6 +423,7 @@ async function startServer() {
         currentPlayerIndex: room.currentPlayerIndex,
       }
     });
+    syncRoomState(roomId);
 
     setTimeout(() => {
       nextPlayer(roomId);

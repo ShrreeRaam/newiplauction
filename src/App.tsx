@@ -4,6 +4,7 @@ import { cn, formatPrice } from './lib/utils';
 import { Player } from './players';
 import { Trophy, Users, Timer, Gavel, Copy, Play, SkipForward, IndianRupee, Pause, List, LayoutDashboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { supabase } from './supabase';
 
 const TEAM_LOGOS: Record<string, string> = {
   CSK: "https://scores.iplt20.com/ipl/teamlogos/CSK.png",
@@ -55,6 +56,7 @@ export default function App() {
   const [bidError, setBidError] = useState('');
   const [username, setUsername] = useState('');
   const [notification, setNotification] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
   
   const [gameState, setGameState] = useState<{
     currentPlayer: Player | null;
@@ -202,12 +204,24 @@ export default function App() {
     };
   }, []);
 
+    const handleGoogleLogin = async () => {
+    if (!supabase) return setError('Supabase not configured in .env');
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+    if (error) setError(error.message);
+  };
+
+  const handleLogout = async () => {
+    await supabase?.auth.signOut();
+  };
+
   const handleCreateRoom = () => {
     if (!username.trim()) {
       setError('Please enter a username');
       return;
     }
-    socket.emit('createRoom', { mode: selectedMode, username });
+    socket.emit('createRoom', { mode: selectedMode, username, userId: user?.id });
   };
   
   const handleJoinRoom = () => {
@@ -216,18 +230,18 @@ export default function App() {
       return;
     }
     if (joinId.length === 4) {
-      socket.emit('joinRoom', { roomId: joinId, username });
+      socket.emit('joinRoom', { roomId: joinId, username, userId: user?.id });
     } else {
       setError('Enter a 4-digit Room ID');
     }
   };
 
   const handleSelectTeam = (team: string) => {
-    socket.emit('selectTeam', { team, roomId });
+    socket.emit('selectTeam', { team, roomId, userId: user?.id });
   };
 
   const handleBid = () => {
-    socket.emit('bid', { roomId });
+    socket.emit('bid', { roomId, userId: user?.id });
   };
 
   const handleStart = () => {
@@ -282,6 +296,26 @@ export default function App() {
           </div>
 
           <div className="space-y-6">
+            {user ? (
+              <div className="flex justify-between items-center bg-white/40 border border-white/60 p-4 rounded-xl shadow-sm">
+                 <div className="text-sm">
+                   <span className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Signed In As</span>
+                   <span className="font-bold text-lg text-slate-900">{user.user_metadata?.full_name || user.email}</span>
+                 </div>
+                 <button onClick={handleLogout} className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-sm font-bold transition-colors">Sign Out</button>
+              </div>
+            ) : (
+              <button onClick={handleGoogleLogin} className="w-full py-4 bg-white/60 border border-white/80 hover:bg-white text-slate-900 shadow-sm font-bold rounded-xl active:scale-95 transition-all flex items-center justify-center gap-2">
+                <svg className="w-5 h-5" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign in with Google to Save Auctions
+              </button>
+            )}
+
             <div className="space-y-2">
               <label className="text-[10px] font-black text-slate-700 uppercase tracking-widest px-1">Your Name</label>
               <input

@@ -308,31 +308,31 @@ export const IPL_LEGENDS_PLAYERS: Player[] = [
   { id: 'L016', name: "Faf du Plessis", role: "BATSMAN", basePrice: 15000000, isOverseas: true , set: 'BA1' },
   { id: 'L017', name: "Wriddhiman Saha", role: "WICKET_KEEPER", basePrice: 5000000, isOverseas: false , set: 'WK1' },
   { id: 'L018', name: "Dinesh Karthik", role: "WICKET_KEEPER", basePrice: 6000000, isOverseas: false , set: 'WK1' },
-  { id: 'L019', name: "Jonny Bairstow", role: "WICKET_KEEPER", basePrice: 14000000, isOverseas: true , set: 'WK1' },
+
   { id: 'L020', name: "Umran Malik", role: "BOWLER", basePrice: 8000000, isOverseas: false , set: 'BO1' },
   { id: 'L021', name: "Harshal Patel", role: "BOWLER", basePrice: 11000000, isOverseas: false , set: 'BO1' },
   { id: 'L022', name: "Mark Wood", role: "BOWLER", basePrice: 8000000, isOverseas: true , set: 'BO1' },
   { id: 'L023', name: "Rajat Patidar", role: "BATSMAN", basePrice: 6000000, isOverseas: false , set: 'BA1' },
   { id: 'L024', name: "Nitish Rana", role: "BATSMAN", basePrice: 8000000, isOverseas: false , set: 'BA1' },
-  { id: 'L025', name: "Venkatesh Iyer", role: "ALL_ROUNDER", basePrice: 8000000, isOverseas: false , set: 'AL1' },
+
   { id: 'L026', name: "Krunal Pandya", role: "ALL_ROUNDER", basePrice: 8000000, isOverseas: false , set: 'AL1' },
-  { id: 'L027', name: "Liam Livingstone", role: "ALL_ROUNDER", basePrice: 11000000, isOverseas: true , set: 'M2' },
+
   { id: 'L028', name: "Shakib Al Hasan", role: "ALL_ROUNDER", basePrice: 8000000, isOverseas: true , set: 'AL1' },
   { id: 'L029', name: "Chris Morris", role: "ALL_ROUNDER", basePrice: 16000000, isOverseas: true , set: 'AL1' },
   { id: 'L030', name: "Aiden Markram", role: "BATSMAN", basePrice: 9000000, isOverseas: true , set: 'BA1' },
   { id: 'L031', name: "Shimron Hetmyer", role: "BATSMAN", basePrice: 11000000, isOverseas: true , set: 'BA1' },
-  { id: 'L032', name: "David Miller", role: "BATSMAN", basePrice: 10000000, isOverseas: true , set: 'M2' },
-  { id: 'L033', name: "Sarfaraz Khan", role: "BATSMAN", basePrice: 5000000, isOverseas: false , set: 'BA1' },
+
+
   { id: 'L034', name: "Manish Pandey", role: "BATSMAN", basePrice: 9000000, isOverseas: false , set: 'BA1' },
-  { id: 'L035', name: "Maheesh Theekshana", role: "BOWLER", basePrice: 8000000, isOverseas: true , set: 'BO1' },
-  { id: 'L036', name: "Matheesha Pathirana", role: "BOWLER", basePrice: 9000000, isOverseas: true , set: 'BO1' },
+
+
   { id: 'L037', name: "Khaleel Ahmed", role: "BOWLER", basePrice: 7000000, isOverseas: false , set: 'BO1' },
-  { id: 'L038', name: "Ishant Sharma", role: "BOWLER", basePrice: 5000000, isOverseas: false , set: 'BO1' },
-  { id: 'L039', name: "Umesh Yadav", role: "BOWLER", basePrice: 7000000, isOverseas: false , set: 'BO1' },
+
+
   { id: 'L040', name: "Sandeep Sharma", role: "BOWLER", basePrice: 6000000, isOverseas: false , set: 'BO1' },
   { id: 'L041', name: "Jaydev Unadkat", role: "BOWLER", basePrice: 8000000, isOverseas: false , set: 'BO1' },
-  { id: 'L042', name: "Karn Sharma", role: "BOWLER", basePrice: 5000000, isOverseas: false , set: 'BO1' },
-  { id: 'L043', name: "Rahul Chahar", role: "BOWLER", basePrice: 9000000, isOverseas: false , set: 'BO1' },
+
+
   { id: 'L044', name: "Mayank Markande", role: "BOWLER", basePrice: 6000000, isOverseas: false , set: 'BO1' },
   { id: 'L045', name: "Piyush Chawla", role: "BOWLER", basePrice: 6000000, isOverseas: false , set: 'BO1' },
   { id: 'L046', name: "Amit Mishra", role: "BOWLER", basePrice: 5000000, isOverseas: false , set: 'BO1' },
@@ -340,7 +340,7 @@ export const IPL_LEGENDS_PLAYERS: Player[] = [
   { id: 'L048', name: "Shahbaz Ahmed", role: "ALL_ROUNDER", basePrice: 5000000, isOverseas: false , set: 'AL1' },
   { id: 'L049', name: "Lalit Yadav", role: "ALL_ROUNDER", basePrice: 5000000, isOverseas: false , set: 'AL1' },
   { id: 'L050', name: "Abishek Porel", role: "WICKET_KEEPER", basePrice: 3000000, isOverseas: false , set: 'WK1' },
-  { id: 'L051', name: "Dasun Shanaka", role: "ALL_ROUNDER", basePrice: 6000000, isOverseas: true , set: 'AL1' },
+
   { id: 'L052', name: "Shikhar Dhawan", role: "BATSMAN", basePrice: 15000000, isOverseas: false , set: 'BA1' }
 ];
 
