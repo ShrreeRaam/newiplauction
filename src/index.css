@@ -33,29 +33,49 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Authentic Glassmorphism base for LIGHT theme */
 .glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 100%);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-top: 1px solid rgba(255, 255, 255, 0.9);
-  border-left: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  /* 1. Semi-transparent background */
+  background: rgba(255, 255, 255, 0.45); 
+  
+  /* 2. The Frost Effect (The most important part) */
+  backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+
+  /* 3. High-definition border (Inner Glow) */
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  
+  /* 4. Soft Depth */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+}
+
+.btn-primary-liquid {
+  background: linear-gradient(135deg, #0072ff 0%, #00c6ff 100%);
+  box-shadow: 0 8px 25px rgba(0, 114, 255, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-primary-liquid:hover {
+  box-shadow: 0 12px 35px rgba(0, 114, 255, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
 }
 
 .glass-interactive {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .glass-interactive:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15), 0 0 20px rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 15px 45px -10px rgba(0, 0, 0, 0.12), 0 0 30px rgba(255,255,255,0.5);
   transform: translateY(-2px);
 }
 
 /* Glass input fields for Light theme */
 .glass-input {
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   color: #0f172a;
   transition: all 0.3s ease;
 }
@@ -76,3 +96,50 @@ h1, h2, h3, h4, h5, h6 {
 .ambient-glow-blue {
   background: radial-gradient(circle, rgba(0, 150, 255, 0.3) 0%, rgba(0, 150, 255, 0) 70%);
 }
+
+/* Team Background Patterns - Official Vivid Colors */
+.bg-theme-CSK {
+  background-color: #FCCD04; /* Official CSK Yellow */
+}
+
+.bg-theme-RCB {
+  background-color: #DA291C; /* Official RCB Red */
+}
+
+.bg-theme-MI {
+  background-color: #004BA0; /* Official MI Blue */
+}
+
+.bg-theme-KKR {
+  background-color: #3A225D; /* Official KKR Purple */
+}
+
+.bg-theme-SRH {
+  background-color: #EB5925; /* Official SRH Orange */
+}
+
+.bg-theme-RR {
+  background-color: #EA1B85; /* Official RR Pink */
+}
+
+.bg-theme-LSG {
+  background-color: #00377B; /* Official LSG Blue */
+}
+
+.bg-theme-GT {
+  background-color: #1B2133; /* Official GT Dark Navy */
+}
+
+.bg-theme-DC {
+  background-color: #004C93; /* Official DC Blue */
+}
+
+.bg-theme-PBKS {
+  background-color: #DD1E2F; /* Official PBKS Red */
+}
+
+.bg-theme-Unsold {
+  background-color: #0f172a;
+}
+
+

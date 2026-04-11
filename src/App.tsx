@@ -18,20 +18,32 @@ const TEAM_LOGOS: Record<string, string> = {
   PBKS: "https://scores.iplt20.com/ipl/teamlogos/PBKS.png",
 };
 
-const TEAM_COLORS: Record<string, { bg: string; text: string; border: string; shadow: string }> = {
-  CSK: { bg: "bg-[#FFFF00]", text: "text-[#004BA0]", border: "border-[#F25C19]", shadow: "shadow-xl shadow-black/80" },
-  MI: { bg: "bg-[#004BA0]", text: "text-[#D4AF37]", border: "border-[#D4AF37]", shadow: "shadow-xl shadow-black/80" },
-  KKR: { bg: "bg-[#3A225D]", text: "text-[#D4AF37]", border: "border-[#D4AF37]", shadow: "shadow-xl shadow-black/80" },
-  RCB: { bg: "bg-[#EC1C24]", text: "text-[#000000]", border: "border-[#000000]", shadow: "shadow-xl shadow-black/80" },
-  RR: { bg: "bg-[#EA1B85]", text: "text-[#004BA0]", border: "border-[#004BA0]", shadow: "shadow-xl shadow-black/80" },
-  SRH: { bg: "bg-[#FF822A]", text: "text-[#000000]", border: "border-[#000000]", shadow: "shadow-xl shadow-black/80" },
-  DC: { bg: "bg-[#004BA0]", text: "text-[#EF4123]", border: "border-[#EF4123]", shadow: "shadow-xl shadow-black/80" },
-  PBKS: { bg: "bg-[#D71920]", text: "text-[#D1D3D4]", border: "border-[#D1D3D4]", shadow: "shadow-xl shadow-black/80" },
-  GT: { bg: "bg-[#1B2133]", text: "text-[#CBA92B]", border: "border-[#CBA92B]", shadow: "shadow-xl shadow-black/80" },
-  LSG: { bg: "bg-[#E0202D]", text: "text-[#0057A3]", border: "border-[#0057A3]", shadow: "shadow-xl shadow-black/80" },
-  Unsold: { bg: "bg-gray-800", text: "text-slate-900", border: "border-white", shadow: "shadow-xl shadow-black/80" }
+const TEAM_MESH: Record<string, { color1: string; color2: string; color3: string }> = {
+  CSK: { color1: "bg-[#FCCD04]", color2: "bg-[#0081E9]", color3: "bg-[#FF822A]" }, // Yellow, Blue, Orange
+  MI: { color1: "bg-[#004BA0]", color2: "bg-[#87CEEB]", color3: "bg-[#D1AB3E]" }, // Blue, Light Blue, Gold
+  RCB: { color1: "bg-[#DA291C]", color2: "bg-[#8B0000]", color3: "bg-[#D1AB3E]" }, // Red, Dark Red, Gold
+  KKR: { color1: "bg-[#3A225D]", color2: "bg-[#800080]", color3: "bg-[#F7D54E]" }, // Purple, Deep Purple, Gold
+  SRH: { color1: "bg-[#EB5925]", color2: "bg-[#FF4500]", color3: "bg-[#FFD700]" }, // Saffron, Orange-Red, Gold
+  RR: { color1: "bg-[#EA1B85]", color2: "bg-[#17449E]", color3: "bg-[#FF69B4]" },  // Pink, Navy, Hot Pink
+  LSG: { color1: "bg-[#00377B]", color2: "bg-[#D2222D]", color3: "bg-[#87CEEB]" }, // Sky Blue, Red, Light Blue
+  GT: { color1: "bg-[#1B2133]", color2: "bg-[#BFA461]", color3: "bg-[#4682B4]" },  // Navy, Gold, Steel Blue
+  DC: { color1: "bg-[#004C93]", color2: "bg-[#F83430]", color3: "bg-[#1E90FF]" },  // Blue, Red, Dodger Blue
+  PBKS: { color1: "bg-[#DD1E2F]", color2: "bg-[#E3E3E3]", color3: "bg-[#FF6347]" }, // Red, Silver, Tomato
 };
 
+const TEAM_COLORS: Record<string, { bg: string; text: string; border: string; shadow: string }> = {
+  CSK: { bg: "bg-theme-CSK", text: "text-slate-900", border: "border-[#F25C19]", shadow: "shadow-[0_0_40px_rgba(252,205,4,0.6)]" },
+  MI: { bg: "bg-theme-MI", text: "text-white", border: "border-[#D4AF37]", shadow: "shadow-[0_0_40px_rgba(0,75,160,0.6)]" },
+  KKR: { bg: "bg-theme-KKR", text: "text-[#D4AF37]", border: "border-[#D4AF37]", shadow: "shadow-[0_0_40px_rgba(92,34,136,0.6)]" },
+  RCB: { bg: "bg-theme-RCB", text: "text-white", border: "border-[#000000]", shadow: "shadow-[0_0_40px_rgba(218,41,28,0.6)]" },
+  RR: { bg: "bg-theme-RR", text: "text-white", border: "border-[#004BA0]", shadow: "shadow-[0_0_40px_rgba(234,27,133,0.6)]" },
+  SRH: { bg: "bg-theme-SRH", text: "text-slate-900", border: "border-[#000000]", shadow: "shadow-[0_0_40px_rgba(235,89,37,0.6)]" },
+  DC: { bg: "bg-theme-DC", text: "text-white", border: "border-[#EF4123]", shadow: "shadow-[0_0_40px_rgba(0,76,147,0.6)]" },
+  PBKS: { bg: "bg-theme-PBKS", text: "text-white", border: "border-[#D1D3D4]", shadow: "shadow-[0_0_40px_rgba(221,30,47,0.6)]" },
+  GT: { bg: "bg-theme-GT", text: "text-[#CBA92B]", border: "border-[#CBA92B]", shadow: "shadow-[0_0_40px_rgba(27,33,51,0.6)]" },
+  LSG: { bg: "bg-theme-LSG", text: "text-white", border: "border-[#0057A3]", shadow: "shadow-[0_0_40px_rgba(0,87,163,0.6)]" },
+  Unsold: { bg: "bg-theme-Unsold", text: "text-slate-100", border: "border-slate-500", shadow: "shadow-[0_0_40px_rgba(100,116,139,0.4)]" }
+};
 export default function App() {
   const [view, setView] = useState<'lobby' | 'auction' | 'squads' | 'upcoming'>('lobby');
   const [selectedSquadTeam, setSelectedSquadTeam] = useState<string | null>(null);
@@ -271,7 +283,7 @@ export default function App() {
 
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">Your Name</label>
+              <label className="text-[10px] font-black text-slate-700 uppercase tracking-widest px-1">Your Name</label>
               <input
                 type="text"
                 placeholder="Enter Username"
@@ -311,7 +323,7 @@ export default function App() {
 
               <button
                 onClick={handleCreateRoom}
-                className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold border-none shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:bg-cyan-400 shadow-md text-slate-900 font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-4 btn-primary-liquid font-bold rounded-xl active:scale-95 flex items-center justify-center gap-2"
               >
                 <Play className="w-5 h-5" />
                 Create New Room
@@ -353,10 +365,23 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 p-4 md:p-6 lg:p-8 relative overflow-hidden">
-      {/* Ambient glows */}
-      <div className="absolute top-[0%] left-[10%] w-[800px] h-[800px] rounded-full bg-zinc-100/5 blur-[150px] pointer-events-none z-0"></div>
-      <div className="absolute bottom-[-10%] right-[0%] w-[600px] h-[600px] rounded-full bg-indigo-500/5 blur-[150px] pointer-events-none z-0"></div>
+    <div className={cn("min-h-screen p-4 md:p-6 lg:p-8 relative overflow-hidden", "bg-slate-50 text-slate-900")}>
+      
+      {/* Apple-style Mesh Gradient (Liquid Silk) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className={cn(
+          "absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full blur-[160px] opacity-40 mix-blend-multiply transition-colors duration-1000",
+          myTeam ? TEAM_MESH[myTeam]?.color1 : "bg-zinc-200"
+        )}></div>
+        <div className={cn(
+          "absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full blur-[140px] opacity-40 mix-blend-multiply transition-colors duration-1000",
+          myTeam ? TEAM_MESH[myTeam]?.color2 : "bg-zinc-300"
+        )}></div>
+        <div className={cn(
+          "absolute top-[20%] left-[30%] w-[50vw] h-[50vw] rounded-full blur-[150px] opacity-30 mix-blend-multiply transition-colors duration-1000",
+          myTeam ? TEAM_MESH[myTeam]?.color3 : "bg-zinc-100"
+        )}></div>
+      </div>
       <div className="relative z-10">
       {/* Notification Banner */}
       <AnimatePresence>
@@ -416,32 +441,33 @@ export default function App() {
             className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
           >
             <div className={cn(
-              "px-12 py-8 rounded-2xl text-center transform -rotate-3 border-4",
-              TEAM_COLORS[lastSoldPlayer.team]?.bg || "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold border-none shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all",
+              "px-14 py-10 rounded-2xl text-center transform -rotate-3 border-[3px] shadow-[0_20px_50px_rgba(0,0,0,0.5)]",
+              TEAM_COLORS[lastSoldPlayer.team]?.bg || "bg-slate-900 border-white text-white",
               TEAM_COLORS[lastSoldPlayer.team]?.text || "text-slate-900",
-              TEAM_COLORS[lastSoldPlayer.team]?.border || "border-white",
-              TEAM_COLORS[lastSoldPlayer.team]?.shadow || "shadow-xl shadow-black/80"
+              TEAM_COLORS[lastSoldPlayer.team]?.border || "border-transparent"
             )}>
-              <h2 className="text-6xl font-black uppercase mb-2 italic tracking-tighter">
+              <h2 className="text-7xl font-black uppercase mb-6 italic tracking-tighter drop-shadow-sm">
                 {lastSoldPlayer.team === 'Unsold' ? 'UNSOLD' : 'SOLD!'}
               </h2>
-              <div className="space-y-1">
+              <div className="space-y-3">
                 {lastSoldPlayer.team !== 'Unsold' && TEAM_LOGOS[lastSoldPlayer.team] && (
-                  <motion.img 
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    src={TEAM_LOGOS[lastSoldPlayer.team]} 
-                    alt={lastSoldPlayer.team} 
-                    className="w-24 h-24 mx-auto mb-4 object-contain"
-                  />
+                  <div className="w-32 h-32 mx-auto mb-6 bg-white rounded-full flex items-center justify-center shadow-inner border-[2px] border-blue-600/80 drop-shadow-lg">
+                    <motion.img 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                      src={TEAM_LOGOS[lastSoldPlayer.team]} 
+                      alt={lastSoldPlayer.team} 
+                      className="w-24 h-24 object-contain"
+                    />
+                  </div>
                 )}
-                <p className="text-2xl font-bold">{lastSoldPlayer.name}</p>
-                <p className="text-4xl font-black uppercase">
+                <p className="text-3xl font-bold tracking-tight">{lastSoldPlayer.name}</p>
+                <p className="text-5xl font-black uppercase mt-1">
                   {lastSoldPlayer.team === 'Unsold' ? 'UNSOLD' : `TO ${lastSoldPlayer.team}`}
                 </p>
                 {lastSoldPlayer.price > 0 && (
-                  <p className="text-2xl font-bold mt-2">{formatPrice(lastSoldPlayer.price)}</p>
+                  <p className="text-3xl font-bold mt-4 tracking-wide">{formatPrice(lastSoldPlayer.price)}</p>
                 )}
               </div>
             </div>
@@ -564,7 +590,10 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Panel: Current Player & Owners */}
           <div className="lg:col-span-3 space-y-6">
-            <section className="glass-card rounded-2xl p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center relative overflow-hidden">
+            <section className={cn(
+              "glass-card p-6 rounded-2xl flex flex-col items-center text-center relative overflow-hidden transition-all duration-500",
+               gameState.highestBidder ? TEAM_COLORS[gameState.highestBidder]?.shadow : "shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
+            )}>
               <h3 className="w-full text-left text-xs font-bold text-slate-500 uppercase tracking-wider mb-6">Current Player</h3>
               
               <AnimatePresence mode="wait">
@@ -577,7 +606,10 @@ export default function App() {
                     className="space-y-4 w-full"
                   >
                     <div className="relative mx-auto">
-                      <div className="w-32 h-32 bg-white/40 border border-white/60 rounded-xl rounded-full border-2 border-white/5 flex items-center justify-center text-4xl font-bold text-slate-900 font-semibold  overflow-hidden">
+                      <div className={cn(
+                        "w-32 h-32 glass-card rounded-full flex items-center justify-center text-4xl font-bold text-slate-900 font-semibold overflow-hidden transition-all duration-500",
+                        gameState.highestBidder ? TEAM_COLORS[gameState.highestBidder]?.shadow : ""
+                      )}>
                         {gameState.currentPlayer.name.split(' ').map(n => n[0]).join('')}
                       </div>
                       {gameState.timer === 0 && (
@@ -604,7 +636,7 @@ export default function App() {
                     </div>
 
                     <div className="pt-4 space-y-1">
-                      <p className="text-xs text-slate-500 uppercase font-bold">Base Price</p>
+                      <p className="text-xs text-slate-700 uppercase font-bold">Base Price</p>
                       <p className="text-xl font-bold text-slate-900 flex items-center justify-center gap-1">
                         <IndianRupee className="w-4 h-4" />
                         {formatPrice(gameState.currentPlayer.basePrice)}
@@ -651,7 +683,7 @@ export default function App() {
 
           {/* Center Panel: Bidding & Timer */}
           <div className="lg:col-span-6 space-y-6">
-            <section className="glass-card rounded-2xl p-6 rounded-2xl border border-white/5 space-y-6">
+            <section className="glass-card p-6 rounded-2xl space-y-6">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Current Bid</h3>
@@ -742,7 +774,7 @@ export default function App() {
 
           {/* Right Panel: Team Purses */}
           <div className="lg:col-span-3 space-y-6">
-            <section className="glass-card rounded-2xl p-6 rounded-2xl border border-white/5 h-full">
+            <section className="glass-card p-6 rounded-2xl h-full">
               <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-6 flex items-center gap-2">
                 <Trophy className="w-4 h-4" />
                 Team Purses
@@ -768,7 +800,7 @@ export default function App() {
         </div>
 
         {/* Bottom Panel: Sold Players */}
-        <section className="glass-card rounded-2xl p-6 rounded-2xl border border-white/5">
+        <section className="glass-card p-6 rounded-2xl">
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-6 flex items-center gap-2">
             <Users className="w-4 h-4" />
             Sold Players
@@ -776,7 +808,7 @@ export default function App() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {gameState.soldPlayers.length > 0 ? (
               gameState.soldPlayers.slice().reverse().map((sold, i) => (
-                <div key={i} className="bg-white/40 border border-white/60 rounded-xl p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                <div key={i} className={cn("glass-card p-4 rounded-xl flex items-center gap-4 transition-all duration-300 hover:scale-[1.02]", TEAM_COLORS[sold.team]?.shadow || "")}>
                   <div className="w-10 h-10 rounded-full glass-card rounded-2xl border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0">
                     <span className="text-[10px] font-bold text-slate-500">
                       {sold.player.name.split(' ').map(n => n[0]).join('')}
@@ -848,7 +880,7 @@ export default function App() {
                    </h4>
                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                      {groupedPlayers[set].map((player) => (
-                        <div key={player.id} className="glass-interactive bg-white/40 border border-white/60 rounded-xl p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                        <div key={player.id} className="glass-interactive glass-card p-4 rounded-xl flex items-center justify-between">
                           <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-full glass-card rounded-2xl border border-white/5 flex items-center justify-center font-bold text-slate-900 font-semibold ">
                               {player.name.split(' ').map((n: string) => n[0]).join('')}
@@ -861,7 +893,7 @@ export default function App() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs text-slate-500 uppercase font-bold">Base</p>
+                            <p className="text-xs text-slate-700 uppercase font-bold">Base</p>
                             <p className="text-sm font-bold">{formatPrice(player.basePrice)}</p>
                           </div>
                         </div>
@@ -886,10 +918,10 @@ export default function App() {
                   key={team}
                   onClick={() => setSelectedSquadTeam(team)}
                   className={cn(
-                    "p-4 rounded-xl border transition-all flex flex-col items-center gap-2",
+                    "p-4 rounded-xl transition-all flex flex-col items-center gap-2",
                     selectedSquadTeam === team 
-                      ? "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold border-none shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all border-zinc-700 text-slate-900" 
-                      : "glass-card rounded-2xl border-white/5 text-slate-900 hover:border-zinc-400"
+                      ? cn("glass-card border-none scale-105 relative z-10", TEAM_COLORS[team]?.shadow || "shadow-[0_0_40px_rgba(0,0,0,0.1)]") 
+                      : "glass-card border-white/10 text-slate-900 hover:border-white/30 hover:shadow-[0_0_30px_rgba(0,0,0,0.05)]"
                   )}
                 >
                   <img src={TEAM_LOGOS[team]} alt={team} className="w-12 h-12 object-contain" />
@@ -924,7 +956,7 @@ export default function App() {
                   {gameState.soldPlayers
                     .filter(p => p.team === selectedSquadTeam)
                     .map((sold, i) => (
-                      <div key={i} className="bg-white/40 border border-white/60 rounded-xl p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                      <div key={i} className={cn("glass-card p-4 rounded-xl flex items-center justify-between transition-all duration-300 hover:scale-[1.02]", TEAM_COLORS[sold.team]?.shadow || "")}>
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-full glass-card rounded-2xl border border-white/5 flex items-center justify-center font-bold text-slate-900 font-semibold ">
                             {sold.player.name.split(' ').map(n => n[0]).join('')}
