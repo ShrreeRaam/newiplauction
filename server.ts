@@ -34,11 +34,11 @@ interface AuctionState {
   teams: Record<string, TeamData>;
   teamOwners: Record<string, string>; // teamName -> socketId
   teamUserIds: Record<string, string>; // teamName -> userId
-  teamUserIds: Record<string, string>; // teamName -> userId
   currentBidLog: { team: string; price: number }[];
   members: Set<string>;
   mode: '2025' | 'legends';
   usernames: Record<string, string>; // socketId -> username
+  creatorUserId: string | null;
 }
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "";
@@ -118,6 +118,7 @@ async function startServer() {
         members: new Set([socket.id]),
         mode,
         usernames: { [socket.id]: username || "Admin" },
+        creatorUserId: userId || null,
       };
       socket.join(roomId);
       socket.emit("roomCreated", { roomId });
@@ -155,8 +156,12 @@ async function startServer() {
       room.members.add(socket.id);
       room.usernames[socket.id] = username || `Guest_${socket.id.slice(0,4)}`;
       
-      if (!room.adminId) {
+      if (!room.adminId || (userId && room.creatorUserId === userId)) {
+        const oldAdminId = room.adminId;
         room.adminId = socket.id;
+        if (oldAdminId && oldAdminId !== socket.id) {
+          io.to(oldAdminId).emit("adminChanged", { isAdmin: false });
+        }
       }
 
       // Restore ownership if userId matches
